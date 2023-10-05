@@ -12,66 +12,6 @@
 
   ;; Window size
   (setq default-frame-alist '((width . 100) (height . 40)))
-
-  (custom-set-variables
-    ;; custom-set-variables was added by Custom.
-    ;; If you edit it by hand, you could mess it up, so be careful.
-    ;; Your init file should contain only one such instance.
-    ;; If there is more than one, they won't work right.
-    '(css-indent-offset 2)
-    '(cua-mode 1)
-    '(cursor-type 'bar)
-    '(custom-enabled-themes '(modus-vivendi-deuteranopia))
-    '(custom-safe-themes
-      '("74e2ed63173b47d6dc9a82a9a8a6a9048d89760df18bc7033c5f91ff4d083e37" default))
-    '(flx-ido-mode 1)
-    '(ido-mode 1 nil (ido))
-    '(inhibit-startup-screen t)
-    '(package-selected-packages
-      '(ag
-	company
-	diff-hl
-	dired-sidebar
-	expand-region
-	flx-ido projectile
-	format-all
-	kaolin-themes
-	magit
-	markdown-mode
-	move-text
-	multiple-cursors
-	neotree
-	smex
-	typescript-mode
-	vs-dark-theme
-	web-mode
-	yaml-mode
-	))
-    '(projectile-require-project-root nil))
-
-
-  
-  (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-  '(default ((t (:inherit nil
-		 :extend nil
-		 :stipple nil
-		 :inverse-video nil
-		 :box nil
-		 :strike-through nil
-		 :overline nil
-		 :underline nil
-		 :slant normal
-		 :weight normal
-		 :height 136
-		 :width normal
-		 :foundry "JB"
-		 :family "JetBrains Mono")))))
-
-
   
   ;; Multiple Cursors
   (require 'multiple-cursors)
@@ -95,6 +35,27 @@
 
   (move-text-default-bindings )
 
+
+
+  ;; Hiden special buffers regexp
+  (setq hidden-buffers-regexp
+	(rx (or (and bos  " ")
+		(and bos
+		     (or "*Buffer List*"
+			 "*clang-output*"
+			 "*compilation*"
+			 "*Compile-Log*"
+			 "*Completions*"
+			 (seq "*EGLOT" (+ anything))
+			 "*Help*"
+			 (seq "magit" (+ anything))
+			 "*Messages*"
+			 "*Packages*"
+			 "*scratch*"
+			 "*Shell Command Output*"
+			 "*vc-diff*")
+		     eos))))
+   
   ;; Ido Mode
   (defun my-ido-mode-config ()
     (setq ido-everywhere t)
@@ -109,15 +70,7 @@
     (add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
 
     ;; Hide special buffers
-    (setq ido-ignore-buffers (list (rx (or (and bos  " ")
-	(and bos
-	    (or "*Completions*"
-		"*Shell Command Output*"
-		"*Messages*"
-		"*compilation*"
-		"*clang-output*"
-		"*vc-diff*")
-	    eos)))))
+    (setq ido-ignore-buffers (list hidden-buffers-regexp))
 
     ;; Allow spaces
     (add-hook 'ido-make-file-list-hook
@@ -131,6 +84,9 @@
 
   (add-hook 'ido-setup-hook 'my-ido-mode-config)
 
+
+
+  
   
   ;; Commands
   (global-set-key (kbd "M-x") 'smex)
@@ -147,6 +103,9 @@
 
   ;; Backups
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+
+
+  
 
 
   
@@ -175,8 +134,16 @@
 
   (global-set-key (kbd "C-p") 'my-find-file)
 
+  ;; Hide special buffers
+  (defun my-buffer-skip-p (window buffer bury-or-kill)
+    (string-match-p hidden-buffers-regexp (buffer-name buffer)))
+
+  (setq switch-to-prev-buffer-skip 'my-buffer-skip-p)
 
 
+
+
+  
   
   ;; programming
   (emmet-mode 1)
@@ -229,5 +196,65 @@
   (global-set-key (kbd "C--") 'text-scale-decrease)
 
   
-  ) ;; END OF STARTUP
+  ) ;;
 
+
+
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+  '(css-indent-offset 2)
+  '(cua-mode 1)
+  '(cursor-type 'bar)
+  '(custom-enabled-themes '(modus-vivendi-deuteranopia))
+  '(custom-safe-themes
+    '("74e2ed63173b47d6dc9a82a9a8a6a9048d89760df18bc7033c5f91ff4d083e37" default))
+  '(flx-ido-mode 1)
+  '(ido-mode 1 nil (ido))
+  '(inhibit-startup-screen t)
+  '(package-selected-packages
+    '(
+      ag
+      company
+      diff-hl
+      dired-sidebar
+      emr
+      expand-region
+      flx-ido projectile
+      format-all
+      kaolin-themes
+      magit
+      markdown-mode
+      move-text
+      multiple-cursors
+      neotree
+      smex
+      typescript-mode
+      vs-dark-theme
+      web-mode
+      yaml-mode
+      ))
+  '(projectile-require-project-root nil))
+
+
+(custom-set-faces
+;; custom-set-faces was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+'(default ((t (:inherit nil
+	       :extend nil
+	       :stipple nil
+	       :inverse-video nil
+	       :box nil
+	       :strike-through nil
+	       :overline nil
+	       :underline nil
+	       :slant normal
+	       :weight normal
+	       :height 136
+	       :width normal
+	       :foundry "JB"
+	       :family "JetBrains Mono")))))
