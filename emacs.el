@@ -5,37 +5,55 @@
 
   ;; Emacs configuration file content is written below.
 
-  ;; MELPA
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (package-initialize)
+  (setq default-frame-alist '((width . 100) (height . 40))) ;; Window size
+  (load-theme 'modus-vivendi-deuteranopia)
+  (setq cursor-type 'bar)
+  (setq inhibit-startup-screen t)
 
-  ;; Window size
-  (setq default-frame-alist '((width . 100) (height . 40)))
-  
-  ;; Multiple Cursors
-  (require 'multiple-cursors)
-  (global-set-key (kbd "C-d") 'mc/edit-lines)
-  (global-set-key (kbd "C-.") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-,") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C->") 'mc/mark-all-like-this)
-
-  ;; Modes
+  ;; Visual Modes
   (blink-cursor-mode -1)
   (column-number-mode +1)
   (fringe-mode 4)
   (tool-bar-mode -1) 
   (scroll-bar-mode -1)
+  
+  ;;
+  (cua-mode 1)
+  (pixel-scroll-precision-mode 1)
+  (recentf-mode 1)
+  (delete-selection-mode +1)
   (global-goto-address-mode +1)
   (global-visual-line-mode +1)
-  (delete-selection-mode +1)
-  (recentf-mode 1)
-  (global-diff-hl-mode)
-  (pixel-scroll-precision-mode 1)
+  (move-text-default-bindings)
 
-  (move-text-default-bindings )
+  ;; ;; MELPA
+  ;; (require 'package)
+  ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  ;; (package-initialize)
 
+  
+  ;; ;; Multiple Cursors
+  ;; (require 'multiple-cursors)
+  ;; (global-set-key (kbd "C-d") 'mc/edit-lines)
+  ;; (global-set-key (kbd "C-.") 'mc/mark-next-like-this)
+  ;; (global-set-key (kbd "C-,") 'mc/mark-previous-like-this)
+  ;; (global-set-key (kbd "C->") 'mc/mark-all-like-this)
 
+  (use-package flx-ido
+    :ensure t
+    :defer t
+    :init (flx-ido-mode 1))
+
+  (use-package diff-hl
+    :ensure t
+    :defer t
+    :init (global-diff-hl-mode))
+  
+  (use-package projectile :ensure t :defer t)
+
+  (use-package magit :ensure t :defer t)
+
+  (use-package ag :ensure t :defer t)  
 
   ;; Hiden special buffers regexp
   (setq hidden-buffers-regexp
@@ -58,7 +76,6 @@
    
   ;; Ido Mode
   (defun my-ido-mode-config ()
-    (setq ido-everywhere t)
 
       ;; Vertical mode
     (setq ido-decorations (quote ("\n" "" "\n" "\n ..." "[" "]" "
@@ -82,38 +99,37 @@
     (define-key ido-completion-map (kbd "<up>")   'ido-prev-match)
     (define-key ido-completion-map (kbd "<down>") 'ido-next-match))
 
-  (add-hook 'ido-setup-hook 'my-ido-mode-config)
 
 
-
-  
-  
   ;; Commands
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command) ;; Old M-x.
+  (use-package smex
+    :defer t
+    :bind (("M-x" . smex)
+	   ("M-X" . smex-major-mode-commands)))
+
 
   ;; Text manipulation
+  (use-package expand-region
+    :defer t
+    :bind (("S-SPC" . er/contract-region)
+	   ("C-SPC" . er/expand-region)))
+    
   (windmove-default-keybindings 'meta)
-  (global-set-key (kbd "C-SPC") 'er/expand-region)
-  (global-set-key (kbd "C-S-SPC") 'er/contract-region)
   (global-set-key (kbd "TAB") 'indent-rigidly)
-  (global-set-key (kbd "M-S-<up>") 'move-text-up)
-  (global-set-key (kbd "M-S-<down>") 'move-text-down)
+
+  (use-package move-text
+    :ensure t
+    :defer t
+    :bind (("M-S-<up>" . move-text-up)
+	   ("M-S-<down>" . move-text-down)))
 
   ;; Backups
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
-
-  
-
-
-  
   ;; Files / buffers
   (global-set-key "\C-x\ \C-r" 'recentf-open-files)
   (global-set-key (kbd "C-w") 'kill-buffer)
-  (global-set-key (kbd "C-o") 'ido-switch-buffer)
-  (global-set-key (kbd "C-b") 'ivy-switch-buffer)
+  
 
   (defun get-def-dir-status-cmd ()
     (format "git -C %s status 2>/dev/null" default-directory))
@@ -132,48 +148,63 @@
 	(call-interactively 'projectile-find-file)
       (call-interactively 'ido-find-file)))
 
-  (global-set-key (kbd "C-p") 'my-find-file)
 
+  (use-package ido
+    :defer t
+    :config (add-hook 'ido-setup-hook 'my-ido-mode-config)
+    :init
+    (ido-mode 1)
+    (setq ido-everywhere t)
+
+    
+    :bind (("C-o" . ido-switch-buffer)
+	   ("C-p" . my-find-file)))
+
+  
   ;; Hide special buffers
   (defun my-buffer-skip-p (window buffer bury-or-kill)
     (string-match-p hidden-buffers-regexp (buffer-name buffer)))
 
   (setq switch-to-prev-buffer-skip 'my-buffer-skip-p)
 
+  
 
+  (defun load-company-hook ()
+    ;; (defun tab-indent-or-complete ()
+    ;;   (interactive)
+    ;;   (if (minibufferp)
+    ;;       (minibuffer-complete)
+    ;;     (if (or (not yas-minor-mode)
+    ;;             (null (do-yas-expand)))
+    ;;         (if (check-expansion)
+    ;;             (company-complete-common)
+    ;;           (indent-for-tab-command)))))
 
+    ;; (global-set-key [backtab] 'tab-indent-or-complete)
+    
+    ;;(setq company-dabbrev-downcase 0)
+    ;;(setq company-idle-delay 0)
+    (company-mode 1)
+    (global-company-mode)
+    (setq company-minimum-prefix-length 1))
 
   
   
   ;; programming
-  (emmet-mode 1)
   (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
   (add-hook 'html-mode-hook 'emmet-mode)
   (add-hook 'css-mode-hook  'emmet-mode)
+  (setq css-indent-offset 2)
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.erb?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-mode))
 
   (global-set-key [backtab] 'emmet-expand-line)
-
-  (company-mode 1)
-  (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-minimum-prefix-length 1)
-  ;;(setq company-dabbrev-downcase 0)
-  ;;(setq company-idle-delay 0)
-
-  ;; (defun tab-indent-or-complete ()
-  ;;   (interactive)
-  ;;   (if (minibufferp)
-  ;;       (minibuffer-complete)
-  ;;     (if (or (not yas-minor-mode)
-  ;;             (null (do-yas-expand)))
-  ;;         (if (check-expansion)
-  ;;             (company-complete-common)
-  ;;           (indent-for-tab-command)))))
-
-  ;; (global-set-key [backtab] 'tab-indent-or-complete)
-
+  
+  (add-hook 'c-mode-hook 'load-company-hook)
+  (add-hook 'python-mode-hook 'load-company-hook)
+  (add-hook 'emacs-lisp-mode-hook 'load-company-hook)
+ 
 
   ;; (setq treesit-language-source-alist
   ;; 	'((tsx
@@ -186,7 +217,10 @@
   ;; 	   "master"
   ;; 	   "typescript/src")))
 
-  
+
+  (use-package format-all
+    :ensure t
+    :defer t)
   
   ;; recursive search
   (global-set-key (kbd "C-S-s") 'ag)
@@ -205,38 +239,17 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
-  '(css-indent-offset 2)
-  '(cua-mode 1)
-  '(cursor-type 'bar)
-  '(custom-enabled-themes '(modus-vivendi-deuteranopia))
-  '(custom-safe-themes
-    '("74e2ed63173b47d6dc9a82a9a8a6a9048d89760df18bc7033c5f91ff4d083e37" default))
-  '(flx-ido-mode 1)
-  '(ido-mode 1 nil (ido))
-  '(inhibit-startup-screen t)
   '(package-selected-packages
     '(
-      ag
       company
-      diff-hl
       dired-sidebar
-      emr
       expand-region
-      flx-ido projectile
-      format-all
-      kaolin-themes
-      magit
       markdown-mode
-      move-text
-      multiple-cursors
-      neotree
-      smex
+      ;;multiple-cursors
       typescript-mode
-      vs-dark-theme
       web-mode
       yaml-mode
-      ))
-  '(projectile-require-project-root nil))
+      )))
 
 
 (custom-set-faces
