@@ -25,11 +25,12 @@
   (global-goto-address-mode +1)
   (global-visual-line-mode +1)
   (move-text-default-bindings)
+  (electric-pair-mode t)
 
-  ;; ;; MELPA
-  ;; (require 'package)
-  ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  ;; (package-initialize)
+  ;; melpa
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (package-initialize)
 
   
   ;; ;; Multiple Cursors
@@ -59,21 +60,26 @@
   (setq hidden-buffers-regexp
 	(rx (or (and bos  " ")
 		(and bos
-		     (or "*Buffer List*"
+		     (or (seq "*ag search" (+ anything))
+			 "*Buffer List*"
+			 "*clang-error*"			 
 			 "*clang-output*"
 			 "*compilation*"
 			 "*Compile-Log*"
 			 "*Completions*"
 			 (seq "*EGLOT" (+ anything))
+			 (seq "*Flymake" (+ anything))
 			 "*Help*"
+			 "*lsp-log*"
 			 (seq "magit" (+ anything))
 			 "*Messages*"
 			 "*Packages*"
 			 "*scratch*"
 			 "*Shell Command Output*"
+			 (seq "*ts-ls" (+ anything))
 			 "*vc-diff*")
 		     eos))))
-   
+  
   ;; Ido Mode
   (defun my-ido-mode-config ()
 
@@ -125,6 +131,8 @@
 
   ;; Backups
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  ;; Auto save
+  (setq auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-saved-files/" t)))
 
   ;; Files / buffers
   (global-set-key "\C-x\ \C-r" 'recentf-open-files)
@@ -186,7 +194,7 @@
     ;;(setq company-idle-delay 0)
     (company-mode 1)
     (global-company-mode)
-    (setq company-minimum-prefix-length 1))
+    (setq company-minimum-prefix-length 2))
 
   
   
@@ -199,16 +207,19 @@
   (add-to-list 'auto-mode-alist '("\\.erb?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-mode))
 
+  (require 'lsp-mode)
+  (add-hook 'typescript-mode-hook #'lsp)
+  (add-hook 'python-mode-hook #'lsp)
+  (add-hook 'c-mode-hook #'lsp)
+
   (global-set-key [backtab] 'emmet-expand-line)
   
   (add-hook 'c-mode-hook 'load-company-hook)
   (add-hook 'python-mode-hook 'load-company-hook)
   (add-hook 'emacs-lisp-mode-hook 'load-company-hook)
- 
 
   ;; (setq treesit-language-source-alist
-  ;; 	'((tsx
-  ;; 	   "https://github.com/tree-sitter/tree-sitter-typescript"
+  ;; 	'((tsx  ;; 	   "https://github.com/tree-sitter/tree-sitter-typescript"
   ;; 	   "master"
   ;; 	   "tsx/src")
 	  
@@ -216,7 +227,11 @@
   ;; 	   "https://github.com/tree-sitter/tree-sitter-typescript"
   ;; 	   "master"
   ;; 	   "typescript/src")))
-
+  
+  
+  (add-to-list 'load-path "~/.emacs.d/tsx-mode/")
+  (setq typescript-indent-level 2) 
+  
 
   (use-package format-all
     :ensure t
@@ -235,39 +250,17 @@
 
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-  '(package-selected-packages
-    '(
-      company
-      dired-sidebar
-      expand-region
-      markdown-mode
-      ;;multiple-cursors
-      typescript-mode
-      web-mode
-      yaml-mode
-      )))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(lsp-mode treemacs lsp-treemacs http company dired-sidebar expand-region markdown-mode typescript-mode web-mode yaml-mode)))
 
 
 (custom-set-faces
-;; custom-set-faces was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-'(default ((t (:inherit nil
-	       :extend nil
-	       :stipple nil
-	       :inverse-video nil
-	       :box nil
-	       :strike-through nil
-	       :overline nil
-	       :underline nil
-	       :slant normal
-	       :weight normal
-	       :height 136
-	       :width normal
-	       :foundry "JB"
-	       :family "JetBrains Mono")))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 136 :width normal :foundry "JB" :family "JetBrains Mono")))))
