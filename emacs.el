@@ -12,7 +12,7 @@
 ;; 							(menu-bar-lines . 0)
 ;; 							(vertical-scroll-bars . nil)))
 
-(load-theme 'leuven-dark t)
+(load-theme 'wald t)
 
 (blink-cursor-mode -1)
 (cua-mode 1)
@@ -20,6 +20,12 @@
 (delete-selection-mode +1)
 (global-goto-address-mode +1)
 (electric-pair-mode t)
+
+(with-eval-after-load 'org
+  (setq org-support-shift-select t)
+  (setq org-startup-indented t)
+  (add-hook 'org-mode-hook #'visual-line-mode))
+
 
 ;; Package Setup
 (use-package flx-ido :defer t :ensure t :init (flx-ido-mode 1))
@@ -111,6 +117,12 @@
 
 (global-set-key [backtab] 'sjlwa/tab)
 (global-set-key "\t" 'indent-rigidly)
+
+(defun backward-delete-word (arg)
+  (interactive "p")
+  (delete-region (point) (progn (backward-word arg) (point))))
+(global-set-key (kbd "C-<backspace>") 'backward-delete-word)
+
 
 ;; Files / buffers
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
