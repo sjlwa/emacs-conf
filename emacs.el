@@ -24,7 +24,7 @@
 
 ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
 (cua-mode 1)
-(load-theme 'wald t)
+(load-theme 'amena)
 (delete-selection-mode +1)
 (global-goto-address-mode +1)
 (electric-pair-mode t)
