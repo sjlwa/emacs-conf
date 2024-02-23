@@ -1,7 +1,9 @@
 ;; Temporarily increase `gc-cons-hold' when loading to speed up startup.
 (setq gc-cons-threshold most-positive-fixnum
       file-name-handler-alist nil ;; Avoid analyzing files when loading remote files.
-      inhibit-startup-screen t)
+      inhibit-startup-screen t
+	  warning-minimum-level :emergency)
+
 
 (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000)))
 
@@ -16,15 +18,24 @@
 ;; (blink-cursor-mode -1)
 
 
+;; (require 'package)
+;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
-(load-theme 'wald t)
-
-(cua-mode 1)
 
 ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
+(cua-mode 1)
+(load-theme 'wald t)
 (delete-selection-mode +1)
 (global-goto-address-mode +1)
 (electric-pair-mode t)
+(add-hook 'prog-mode-hook 'hs-minor-mode)
+(put 'dired-find-alternate-file 'disabled nil)
+(fset 'yes-or-no-p 'y-or-n-p)
+(windmove-default-keybindings 'meta)
+(setq-default tab-width 4)
+(setq tooltip-delay 0.1)
+(setq eldoc-idle-delay 0)
+
 
 (with-eval-after-load 'org
   (setq org-support-shift-select t)
@@ -32,34 +43,11 @@
   (add-hook 'org-mode-hook #'visual-line-mode))
 
 
-(windmove-default-keybindings 'meta)
-
-
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
       auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-saved-files/" t))
       dired-kill-when-opening-new-dired-buffer t
       vc-follow-symlinks t)
 
-(fset 'yes-or-no-p 'y-or-n-p)
-
-
-(add-hook 'after-init-hook #'(lambda ()
-							   (load "~/dev/emacs-conf/fuzzy.el")
-							   (load "~/dev/emacs-conf/bindings.el")
-							   (load "~/dev/emacs-conf/misc.el")
-
-							   ;; Package Setup
-							   (use-package diff-hl :defer t :ensure t :init (global-diff-hl-mode))
-							   (use-package projectile :ensure t :defer t)
-							   (use-package magit :ensure t :defer t)
-							   (use-package ag :ensure t :defer t)
-							   (use-package http :ensure t :defer t)
-							   (use-package expand-region :ensure t :defer t :bind (("S-SPC" . er/contract-region) ("C-SPC" . er/expand-region)))
-							   (use-package move-text :ensure t :defer t :bind (("M-S-<up>" . move-text-up) ("M-S-<down>" . move-text-down)))
-							   (use-package format-all :ensure t :defer t)
-							   ;;(use-package esup :ensure t :pin melpa) ;; To use MELPA Stable use ":pin melpa-stable",
-							  
-							   ))
 
 
 (use-package company :ensure t
@@ -69,90 +57,118 @@
         company-show-numbers t)
   (global-company-mode t))
 
-(use-package company-quickhelp :ensure t :config (company-quickhelp-mode))
+(use-package company-quickhelp  :ensure t :config (company-quickhelp-mode))
 
-(use-package anaconda-mode
-  :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  ;;(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-  )
+;; (use-package tree-sitter :ensure t)
+;; (use-package tree-sitter-langs :ensure t)
 
-(use-package company-anaconda
-  :init (require 'rx)
-  :after (company)
-  :config
-  (add-to-list 'company-backends 'company-anaconda))
+(use-package lsp-mode :ensure t :config (setq lsp-enable-file-watchers nil))
 
+;; (use-package web-mode :ensure t)
 
+;; (use-package emmet-mode :ensure t)
 
+(use-package html-mode :hook ((css-mode . emmet-mode) (css-mode . lsp)))
 
+(use-package css-mode :hook ((css-mode . emmet-mode) (css-mode . lsp)) :config (setq css-indent-offset 2))
 
-(setq-default tab-width 4)
-(setq lsp-enable-file-watchers nil)
-(setq tooltip-delay 0.1)
-(setq eldoc-idle-delay 0)
-
-
-(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-(add-hook 'html-mode-hook 'emmet-mode)
-(add-hook 'css-mode-hook 'emmet-mode)
-(setq css-indent-offset 2)
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-mode))
 
 ;;(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 ;; (add-hook 'js2-mode-hook 'skewer-mode)
 ;; (add-hook 'css-mode-hook 'skewer-css-mode)
 ;; (add-hook 'html-mode-hook 'skewer-html-mode)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(use-package js2-mode
-  :hook ((js2-mode . company-mode)
-		 (js2-mode . lsp)))
+;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+;; (use-package js2-mode
+;;   :hook ((js2-mode . company-mode)
+;; 		 (js2-mode . lsp)))
   
 
-(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
-(use-package rust-ts-mode
-  :hook ((rust-ts-mode . lsp)
-		 (rust-ts-mode . company-mode)))
+;; (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+;; (use-package rust-ts-mode
+;;   :hook ((rust-ts-mode . lsp)
+;; 		 (rust-ts-mode . company-mode)))
 
-(use-package php-mode
-  :hook (php-mode . lsp)
-  :config (setq php-mode-coding-style 'psr2))
 
-(use-package go-mode
-  :hook ((go-mode . company-mode)
-		 (go-mode . lsp)))
-  ;; :config
-  ;; (add-hook 'go-mode-hook #'company-mode)
-  ;; (add-hook 'go-mode-hook 'eglot-ensure)
-  ;; (add-hook 'after-init-hook #'global-flycheck-mode))
+
+(use-package c-ts-mode :mode (("\\.c\\'" . c-ts-mode)) :hook (c-ts-mode . eglot-ensure))
+
+;;(use-package lsp-pyright :ensure t)
+(use-package python-ts-mode
+  :mode (("\\.py\\'" . python-ts-mode))
+  :hook ((python-ts-mode . lsp)
+		 (python-ts-mode . company-mode))
+  :config (setq lsp-pyright-typechecking-mode "strict"))
+
+
+(defun php-init () (web-mode) (lsp))
+(add-to-list 'auto-mode-alist '("\\.php?\\'" . php-init))
+
+
+(use-package go-ts-mode
+  :mode (("\\.go\\'" . go-ts-mode)
+		 ("\\.mod\\'" . go-mod-ts-mode))
+  :hook ((go-ts-mode . company-mode)
+		(go-ts-mode . eglot-ensure)
+		(go-ts-mode . global-flycheck-mode)))
+
+
+(use-package typescript-ts-mode
+  :mode (("\\.ts\\'" . typescript-ts-mode))
+  :hook (typescript-ts-mode . eglot-ensure))
+
+;;(add-to-list 'load-path "~/.emacs.d/tsx-mode/")
+(setq typescript-indent-level 2)
+;;(add-hook 'typescript-mode-hook #'eglot-ensure)
+
 
 (add-hook 'dart-mode-hook 'lsp)
 (setq lsp-dart-sdk-dir "/home/sjlwa/snap/flutter/common/flutter/bin/cache/dart-sdk"
       lsp-dart-flutter-sdk "/home/sjlwa/snap/flutter/common/flutter/"
       flutter-sdk-path "/home/sjlwa/snap/flutter/common/flutter/")
 
-;;(require 'lsp-mode)
-;;(add-hook 'typescript-mode-hook #'lsp)
-(add-hook 'typescript-mode-hook #'eglot-ensure)
-(add-hook 'python-mode-hook #'lsp)
-(add-hook 'c-mode-hook #'lsp)
-
-(add-hook 'prog-mode-hook 'hs-minor-mode)
-
-(add-to-list 'load-path "~/.emacs.d/tsx-mode/")
-(setq typescript-indent-level 2)
 
 
+ (setq treesit-language-source-alist
+       '(
+		 (bash "https://github.com/tree-sitter/tree-sitter-bash")
+		 (cmake "https://github.com/uyha/tree-sitter-cmake")
+		 (c "https://github.com/tree-sitter/tree-sitter-c")
+		 (css "https://github.com/tree-sitter/tree-sitter-css")
+		 (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+		 (go "https://github.com/tree-sitter/tree-sitter-go")
+		 (gomod "https://github.com/camdencheek/tree-sitter-go-mod.git")
+		 (html "https://github.com/tree-sitter/tree-sitter-html")
+		 (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+		 (json "https://github.com/tree-sitter/tree-sitter-json")
+		 (make "https://github.com/alemuller/tree-sitter-make")
+		 (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+		 (python "https://github.com/tree-sitter/tree-sitter-python")
+		 (php "https://github.com/tree-sitter/tree-sitter-php.git")
+		 (toml "https://github.com/tree-sitter/tree-sitter-toml")
+		 (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+		 (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+		 (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-(put 'dired-find-alternate-file 'disabled nil)
 
-;; (require 'package)
-;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-hook 'after-init-hook #'(lambda ()
+							   (load "~/dev/emacs-conf/fuzzy.el")
+							   (load "~/dev/emacs-conf/bindings.el")
+							   (load "~/dev/emacs-conf/misc.el")
 
+							   ;; Package Setup
+							   (use-package diff-hl :defer t :ensure t :init (global-diff-hl-mode))
+							   ;; (use-package projectile :ensure t :defer t)
+							   ;; (use-package magit :ensure t :defer t)
+							   ;; (use-package ag :ensure t :defer t)
+							   ;; (use-package http :ensure t :defer t)
+							   (use-package expand-region :ensure t :defer t :bind (("S-SPC" . er/contract-region) ("C-SPC" . er/expand-region)))
+							   (use-package move-text :ensure t :defer t :bind (("M-S-<up>" . move-text-up) ("M-S-<down>" . move-text-down)))
+							   ;; (use-package format-all :ensure t :defer t)
+							   ;;(use-package esup :ensure t :pin melpa :config (setq esup-depth 0)) ;; To use MELPA Stable use ":pin melpa-stable",
+							   
+							   ))
 
-(setq esup-depth 0)
 ;;;;;;;;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -160,4 +176,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(standard-themes eldoc-overlay eldoc-box php-mode yaml-mode websocket web-server web-mode typescript-mode smex skewer-mode projectile pdf-tools paredit origami move-text magit lsp-ui lsp-dart list-utils js2-refactor iedit http hover helm go-mode format-all flycheck flx-ido expand-region esup emmet-mode edbi dumb-jump dired-sidebar diff-hl coverlay company-web company-quickhelp company-anaconda clang-format arduino-mode ag)))
+   '(php-quickhelp dockerfile-mode lsp-pyright company-jedi elpy go-mode tree-sitter-langs tree-sitter standard-themes eldoc-overlay eldoc-box yaml-mode websocket web-server typescript-mode smex skewer-mode projectile pdf-tools paredit origami move-text magit lsp-ui lsp-dart list-utils js2-refactor iedit http hover helm format-all flycheck flx-ido expand-region esup emmet-mode dumb-jump dired-sidebar diff-hl coverlay company-web company-quickhelp clang-format arduino-mode ag)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

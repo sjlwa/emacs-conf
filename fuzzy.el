@@ -3,6 +3,7 @@
       (rx (or (and bos " ")
               (and bos
                    (or (seq "*ag search" (+ anything))
+					   "*Async-native-compile-log*"
                        "*Buffer List*"
                        "*clang-error*"
                        "*clang-output*"
