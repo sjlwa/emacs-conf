@@ -127,7 +127,8 @@
       lsp-dart-flutter-sdk "/home/sjlwa/snap/flutter/common/flutter/"
       flutter-sdk-path "/home/sjlwa/snap/flutter/common/flutter/")
 
-
+(setq eshell-prompt-function 'sjlwa-eshell-prompt)
+(setq eshell-highlight-prompt nil)
 
 (defun eshell-init-setup ()
   (company-mode -1)

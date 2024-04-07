@@ -1,6 +1,14 @@
 (defun get-def-dir-status-cmd ()
   (format "git -C %s status 2>/dev/null" default-directory))
 
+
+(defun current-git-branch ()
+  (let ((branch
+         (ignore-errors
+           (shell-command-to-string "git branch --show-current 2> /dev/null"))))
+    (replace-regexp-in-string "\n" "" branch)))
+
+
 (defun isrepo ()
   "Verifica si el directorio actual es un repositorio Git."
   (interactive)
@@ -45,3 +53,24 @@
 
 (defun sjlwa/esc-esc-esc () (interactive)
   (if (minibufferp) (keyboard-escape-quit)))
+
+(defun with-face (str &rest face-plist)
+  (propertize str 'face face-plist))
+
+(defun sjlwa-eshell-prompt ()
+  (concat
+   (with-face (abbreviate-file-name (eshell/pwd))
+              :background "#162012" :foreground "#deb")
+
+   " "
+
+   (with-face (let ((branch (current-git-branch)))
+                (if (string= branch "")
+                    ""
+                  (concat branch " ")))
+              :foreground "#317EAAAA1111")
+
+     (if (= (user-uid) 0)
+         (with-face "#" :background "black" :foreground "#e42")
+       (with-face "$" :foreground "YellowGreen"))
+     " "))
