@@ -19,3 +19,29 @@
   (let ((wd (nth 1 (s-split "Directory " (pwd)))))
     (shell-command (concat "echo " wd " | xclip -sel clip &> /dev/null"))
     (prin1 (concat "Copied: " wd))))
+
+
+(defun ryanmarcus/backward-kill-word ()
+  "Remove all whitespace if the character behind the cursor is whitespace, otherwise remove a word."
+  (interactive)
+  (if (looking-back "[ \n]")
+      ;; delete horizontal space before us and then check to see if we
+      ;; are looking at a newline
+      (progn (delete-horizontal-space 't)
+             (while (looking-back "[ \n]")
+               (backward-delete-char 1)))
+    ;; otherwise, just do the normal kill word.
+    (backward-kill-word 1)))
+
+
+(defun eshell/clear ()
+  (interactive) (eshell/clear-scrollback))
+
+(defun sjlwa/ctrl_w ()
+  (interactive)
+  (if (string= (buffer-name) "*eshell*")
+      (backward-kill-word 1)
+    (kill-buffer)))
+
+(defun sjlwa/esc-esc-esc () (interactive)
+  (if (minibufferp) (keyboard-escape-quit)))

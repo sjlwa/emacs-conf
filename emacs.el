@@ -129,6 +129,15 @@
 
 
 
+(defun eshell-init-setup ()
+  (company-mode -1)
+  (setq eshell-hist-ignoredups t))
+
+(add-hook 'eshell-mode-hook 'eshell-init-setup)
+
+
+
+
  (setq treesit-language-source-alist
        '(
 		 (bash "https://github.com/tree-sitter/tree-sitter-bash")

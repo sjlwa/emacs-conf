@@ -12,12 +12,6 @@
 (global-set-key [backtab] 'sjlwa/tab)
 (global-set-key "\t" 'indent-rigidly)
 
-(defun backward-delete-word (arg)
-  (interactive "p")
-  (delete-region (point) (progn (backward-word arg) (point))))
-
-(global-set-key (kbd "C-<backspace>") 'backward-delete-word)
-
 
 ;; Files / buffers
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
@@ -45,3 +39,11 @@
 
 (global-set-key (kbd "C-c SPC") 'hs-toggle-hiding)
 	
+;;(global-set-key (kbd "C-M-<return>") 'mc/mark-all-in-region)
+;;(global-set-key (kbd "C-M-<down>") 'mc/mark-next-like-this)
+
+(global-set-key (kbd "C-<backspace>") 'ryanmarcus/backward-kill-word)
+
+(global-set-key (kbd "ESC ESC ESC") 'sjlwa/esc-esc-esc)
+
+(global-set-key (kbd "C-w") 'sjlwa/ctrl_w)
