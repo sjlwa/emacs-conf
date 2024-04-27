@@ -11,6 +11,7 @@
                        "*compilation*"
                        "*Compile-Log*"
                        "*Completions*"
+					   (seq "*css" (+ anything))
                        (seq "*EGLOT" (+ anything))
                        (seq "*Flymake" (+ anything))
 					   (seq "*gopls" (+ anything))
@@ -27,7 +28,9 @@
                        (seq "*dart_analysis" (+ anything))
                        (seq "*ts-ls" (+ anything))
                        "*vc-diff*"
-					   "*Warnings*")
+					   "*Warnings*"
+                       "*xref*"
+                       )
                    eos))))
 
 ;; Hide special buffers
