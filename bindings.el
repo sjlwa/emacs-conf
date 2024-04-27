@@ -39,7 +39,7 @@
 
 (global-set-key (kbd "C-c SPC") 'hs-toggle-hiding)
 	
-;;(global-set-key (kbd "C-M-<return>") 'mc/mark-all-in-region)
+(global-set-key (kbd "C-M-<return>") 'mc/mark-all-in-region)
 ;;(global-set-key (kbd "C-M-<down>") 'mc/mark-next-like-this)
 
 (global-set-key (kbd "C-<backspace>") 'ryanmarcus/backward-kill-word)
@@ -47,3 +47,5 @@
 (global-set-key (kbd "ESC ESC ESC") 'sjlwa/esc-esc-esc)
 
 (global-set-key (kbd "C-w") 'sjlwa/ctrl_w)
+
+(define-key icomplete-minibuffer-map (kbd "TAB") #'my-icomplete-force-complete)

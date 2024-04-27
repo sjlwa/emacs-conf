@@ -18,13 +18,21 @@
 ;; (blink-cursor-mode -1)
 
 
-;; (require 'package)
-;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+;;(require 'package)
+;;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
+(load-file "~/.emacs.d/ellama/ellama.el")
+(use-package ellama
+  :init
+  (setopt ellama-language "English")
+  (require 'llm-ollama)
+  (setopt ellama-provider
+		  (make-llm-ollama
+		   :chat-model "llama3" :embedding-model "llama3")))
 
 ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
 (cua-mode 1)
-(load-theme 'amena)
+(load-theme 'amena-olive)
 (delete-selection-mode +1)
 (global-goto-address-mode +1)
 (electric-pair-mode t)
@@ -49,12 +57,21 @@
       vc-follow-symlinks t)
 
 
+(load-file "~/.emacs.d/codeium.el/codeium.el")
+(use-package codeium
+  :init
+  (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
+  :config
+    (setq use-dialog-box nil)
+  )
+
 
 (use-package company :ensure t
   :config
   (setq company-idle-delay 0
         company-minimum-prefix-length 1
-        company-show-numbers t)
+        company-show-numbers t
+        company-tooltip-offset-display 'lines)
   (global-company-mode t))
 
 (use-package company-quickhelp  :ensure t :config (company-quickhelp-mode))
@@ -64,7 +81,17 @@
 
 (use-package lsp-mode :ensure t :config (setq lsp-enable-file-watchers nil))
 
-;; (use-package web-mode :ensure t)
+;;(setq lsp-enable-on-type-formatting nil)
+(setq-default indent-tabs-mode nil)
+(setq-default electric-indent-inhibit t)
+(setq indent-tabs-mode nil)
+(setq web-mode-enable-auto-opening nil)
+(setq web-mode-enable-auto-pairing nil)
+(setq web-mode-enable-auto-closing nil)
+(setq web-mode-enable-auto-quoting nil)
+(setq web-mode-enable-auto-expanding nil)
+(setq web-mode-enable-auto-indentation nil)
+;;(setq web-mode-code-indent-offset 2)
 
 ;; (use-package emmet-mode :ensure t)
 
@@ -89,7 +116,22 @@
 ;;   :hook ((rust-ts-mode . lsp)
 ;; 		 (rust-ts-mode . company-mode)))
 
+(use-package rust-mode
+  :hook ((rust-mode . eglot-ensure)
+		 (rust-mode . company-mode)))
 
+
+
+
+;;(load "~/.emacs.d/eglot-booster/eglot-booster.el")
+;; (use-package eglot-booster
+;; 	:after eglot
+;; 	:config	(eglot-booster-mode))
+
+;;(use-package eglot
+;;  :custom
+;;  (fset #'jsonrpc--log-event #'ignore)
+;;  (setf (plist-get eglot-events-buffer-config :size) 0))
 
 (use-package c-ts-mode :mode (("\\.c\\'" . c-ts-mode)) :hook (c-ts-mode . eglot-ensure))
 
@@ -186,10 +228,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(vmd-mode php-quickhelp dockerfile-mode lsp-pyright company-jedi elpy go-mode tree-sitter-langs tree-sitter standard-themes eldoc-overlay eldoc-box yaml-mode websocket web-server typescript-mode smex skewer-mode projectile pdf-tools paredit origami move-text magit lsp-ui lsp-dart list-utils js2-refactor iedit http hover helm format-all flycheck expand-region esup emmet-mode dumb-jump dired-sidebar diff-hl coverlay company-web company-quickhelp clang-format arduino-mode ag)))
+   '(ellama rust-mode evil rainbow-mode multiple-cursors php-mode vmd-mode php-quickhelp dockerfile-mode lsp-pyright company-jedi elpy go-mode tree-sitter-langs tree-sitter standard-themes eldoc-overlay eldoc-box yaml-mode websocket web-server typescript-mode smex skewer-mode projectile pdf-tools paredit origami move-text magit lsp-ui lsp-dart list-utils js2-refactor iedit http hover helm format-all flycheck expand-region esup emmet-mode dumb-jump dired-sidebar diff-hl coverlay company-web company-quickhelp clang-format arduino-mode ag)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'erase-buffer 'disabled nil)
+(put 'downcase-region 'disabled nil)

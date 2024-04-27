@@ -60,7 +60,7 @@
 (defun sjlwa-eshell-prompt ()
   (concat
    (with-face (abbreviate-file-name (eshell/pwd))
-              :background "#162012" :foreground "#deb")
+              :background color-prompt-pwd-bg :foreground color-prompt-pwd-fg)
 
    " "
 
@@ -68,9 +68,17 @@
                 (if (string= branch "")
                     ""
                   (concat branch " ")))
-              :foreground "#317EAAAA1111")
+              :foreground color-prompt-branch)
 
      (if (= (user-uid) 0)
          (with-face "#" :background "black" :foreground "#e42")
-       (with-face "$" :foreground "YellowGreen"))
+       (with-face "$" :foreground color-prompt-shebang))
      " "))
+
+
+(defun my-icomplete-force-complete ()
+  "Force completion of the current icomplete candidate."
+  (interactive)
+  (when (bound-and-true-p icomplete-mode)
+    (let ((icomplete-prospects-height 1))
+      (icomplete-force-complete))))
