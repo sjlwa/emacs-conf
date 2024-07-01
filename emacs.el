@@ -32,7 +32,11 @@
 
 ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
 (cua-mode 1)
-(load-theme 'amena-olive)
+
+(if window-system
+    (progn
+      (load-theme 'manoj-dark)))
+
 (delete-selection-mode +1)
 (global-goto-address-mode +1)
 (electric-pair-mode t)
@@ -48,6 +52,7 @@
 (with-eval-after-load 'org
   (setq org-support-shift-select t)
   (setq org-startup-indented t)
+  (set-org-mode-tasks-status)
   (add-hook 'org-mode-hook #'visual-line-mode))
 
 
