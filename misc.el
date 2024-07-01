@@ -82,3 +82,11 @@
   (when (bound-and-true-p icomplete-mode)
     (let ((icomplete-prospects-height 1))
       (icomplete-force-complete))))
+
+
+(defun set-org-mode-tasks-status ()
+  (setq org-todo-keywords '((sequence "TODO" "DOING" "|" "DONE")))
+  (setq org-todo-keyword-faces
+      '(("TODO" . org-todo)
+        ("DOING" . org-drawer)
+        ("DONE" . org-done))))
