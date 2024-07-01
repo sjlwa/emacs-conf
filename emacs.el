@@ -80,6 +80,7 @@
 ;; (use-package tree-sitter-langs :ensure t)
 
 (use-package lsp-mode :ensure t :config (setq lsp-enable-file-watchers nil))
+(use-package lsp-ui :ensure)
 
 ;;(setq lsp-enable-on-type-formatting nil)
 (setq-default indent-tabs-mode nil)
@@ -117,7 +118,7 @@
 ;; 		 (rust-ts-mode . company-mode)))
 
 (use-package rust-mode
-  :hook ((rust-mode . eglot-ensure)
+  :hook ((rust-mode . lsp)
 		 (rust-mode . company-mode)))
 
 
@@ -169,6 +170,38 @@
       lsp-dart-flutter-sdk "/home/sjlwa/snap/flutter/common/flutter/"
       flutter-sdk-path "/home/sjlwa/snap/flutter/common/flutter/")
 
+
+(use-package lsp-java :ensure
+  :mode (("\\.java\\'" . java-ts-mode))
+  :hook (java-ts-mode . lsp)
+  :config (yas-global-mode))
+
+
+(eval-after-load
+ 'company
+ '(add-to-list 'company-backends 'company-omnisharp))
+(use-package csharp-mode
+  :mode (("\\.cs\\'" . csharp-mode))
+  :hook ((csharp-mode . lsp)
+         (csharp-mode  . flycheck-mode))
+         (csharp-mode  . company-mode)
+
+  :config ((setq indent-tabs-mode nil)
+           (setq c-syntactic-indentation t)
+           (c-set-style "ellemtel")
+           (setq c-basic-offset 4)
+           (setq truncate-lines t)
+           (setq tab-width 4)
+           (setq evil-shift-width 4)))
+
+
+
+
+
+
+(use-package yasnippet :ensure :config (yas-global-mode))
+
+
 (setq eshell-prompt-function 'sjlwa-eshell-prompt)
 (setq eshell-highlight-prompt nil)
 
@@ -186,11 +219,13 @@
 		 (bash "https://github.com/tree-sitter/tree-sitter-bash")
 		 (cmake "https://github.com/uyha/tree-sitter-cmake")
 		 (c "https://github.com/tree-sitter/tree-sitter-c")
+         (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp.git")
 		 (css "https://github.com/tree-sitter/tree-sitter-css")
 		 (elisp "https://github.com/Wilfred/tree-sitter-elisp")
 		 (go "https://github.com/tree-sitter/tree-sitter-go")
 		 (gomod "https://github.com/camdencheek/tree-sitter-go-mod.git")
 		 (html "https://github.com/tree-sitter/tree-sitter-html")
+         (java "https://github.com/tree-sitter/tree-sitter-java")
 		 (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
 		 (json "https://github.com/tree-sitter/tree-sitter-json")
 		 (make "https://github.com/alemuller/tree-sitter-make")
@@ -200,6 +235,7 @@
 		 (toml "https://github.com/tree-sitter/tree-sitter-toml")
 		 (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
 		 (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+         (rust "https://github.com/tree-sitter/tree-sitter-rust.git")
 		 (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
 
@@ -210,10 +246,10 @@
 
 							   ;; Package Setup
 							   (use-package diff-hl :defer t :ensure t :init (global-diff-hl-mode))
-							   ;; (use-package projectile :ensure t :defer t)
-							   ;; (use-package magit :ensure t :defer t)
-							   ;; (use-package ag :ensure t :defer t)
-							   ;; (use-package http :ensure t :defer t)
+							   (use-package projectile :ensure t :defer t)
+							   (use-package magit :ensure t :defer t)
+							   (use-package ag :ensure t :defer t)
+							   (use-package http :ensure t :defer t)
 							   (use-package expand-region :ensure t :defer t :bind (("S-SPC" . er/contract-region) ("C-SPC" . er/expand-region)))
 							   (use-package move-text :ensure t :defer t :bind (("M-S-<up>" . move-text-up) ("M-S-<down>" . move-text-down)))
 							   ;; (use-package format-alel :ensure t :defer t)

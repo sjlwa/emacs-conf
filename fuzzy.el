@@ -16,11 +16,14 @@
                        (seq "*Flymake" (+ anything))
 					   (seq "*gopls" (+ anything))
                        "*Help*"
+                       (seq "*jdtls" (+ anything))
                        (seq "*lsp-" (+ anything))
                        (seq "magit" (+ anything))
                        "*Messages*"
+                       (seq "*omnisharp" (+ anything))
                        "*Packages*"
                        "*pylsp*"
+                       (seq "*pyright" (+ anything))
 					   (seq "*iph" (+ anything))
                        ;;"*scratch*"
                        "*Shell Command Output*"
