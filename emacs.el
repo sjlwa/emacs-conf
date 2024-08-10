@@ -208,16 +208,6 @@
 (use-package yasnippet :ensure :config (yas-global-mode))
 
 
-(setq eshell-prompt-function 'sjlwa-eshell-prompt)
-(setq eshell-highlight-prompt nil)
-
-(defun eshell-init-setup ()
-  (company-mode -1)
-  (setq eshell-hist-ignoredups t))
-
-(add-hook 'eshell-mode-hook 'eshell-init-setup)
-
-
 
 
  (setq treesit-language-source-alist
@@ -262,6 +252,12 @@
 							   ;;(use-package esup :ensure t :pin melpa :config (setq esup-depth 0)) ;; To use MELPA Stable use ":pin melpa-stable",
 							   
 							   ))
+
+;;(setq eshell-prompt-function 'sjlwa-eshell-prompt)
+;;(setq eshell-highlight-prompt nil)
+(add-hook 'eshell-mode-hook 'eshell-init-setup)
+(add-hook 'after-change-major-mode-hook 'sjlwa/toggle-mode-line-based-on-mode)
+
 
 ;;;;;;;;;;
 (custom-set-variables

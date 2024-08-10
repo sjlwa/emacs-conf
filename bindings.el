@@ -48,4 +48,23 @@
 
 (global-set-key (kbd "C-w") 'sjlwa/ctrl_w)
 
+(global-set-key (kbd "C-S-t") 'sjlwa/tab-new)
+
+(global-set-key (kbd "M-0") (lambda () (interactive) (sjlwa/select-tab-by-number 0)))
+(global-set-key (kbd "M-1") (lambda () (interactive) (sjlwa/select-tab-by-number 1)))
+(global-set-key (kbd "M-2") (lambda () (interactive) (sjlwa/select-tab-by-number 2)))
+(global-set-key (kbd "M-3") (lambda () (interactive) (sjlwa/select-tab-by-number 3)))
+(global-set-key (kbd "M-4") (lambda () (interactive) (sjlwa/select-tab-by-number 4)))
+(global-set-key (kbd "M-5") (lambda () (interactive) (sjlwa/select-tab-by-number 5)))
+(global-set-key (kbd "M-6") (lambda () (interactive) (sjlwa/select-tab-by-number 6)))
+(global-set-key (kbd "M-7") (lambda () (interactive) (sjlwa/select-tab-by-number 7)))
+(global-set-key (kbd "M-8") (lambda () (interactive) (sjlwa/select-tab-by-number 8)))
+(global-set-key (kbd "M-9") (lambda () (interactive) (sjlwa/select-tab-by-number 9)))
+;; TODO: bind M- 0 9 as loop
+;; (dotimes (i 9)
+;;   (global-set-key (kbsd "<M-down>")
+;;                   (lambda () (interactive)
+;;                     (sjlwa/select-tab-by-number__event-handler))))
+
+
 (define-key icomplete-minibuffer-map (kbd "TAB") #'my-icomplete-force-complete)
