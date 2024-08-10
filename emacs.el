@@ -22,14 +22,6 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
 
-(load-file "~/.emacs.d/ellama/ellama.el")
-(use-package ellama
-  :init
-  (setopt ellama-language "English")
-  (require 'llm-ollama)
-  (setopt ellama-provider
-		  (make-llm-ollama
-		   :chat-model "llama3" :embedding-model "llama3")))
 
 ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
 (cua-mode 1)
@@ -38,6 +30,8 @@
     (progn
       (load-theme 'manoj-dark)))
 
+
+(column-number-mode 1)
 (delete-selection-mode +1)
 (global-goto-address-mode +1)
 (electric-pair-mode t)
@@ -63,30 +57,8 @@
       vc-follow-symlinks t)
 
 
-(load-file "~/.emacs.d/codeium.el/codeium.el")
-(use-package codeium
-  :init
-  (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
-  :config
-    (setq use-dialog-box nil)
-  )
+(load "~/dev/emacs-conf/ide.el")
 
-
-(use-package company :ensure t
-  :config
-  (setq company-idle-delay 0
-        company-minimum-prefix-length 1
-        company-show-numbers t
-        company-tooltip-offset-display 'lines)
-  (global-company-mode t))
-
-(use-package company-quickhelp  :ensure t :config (company-quickhelp-mode))
-
-;; (use-package tree-sitter :ensure t)
-;; (use-package tree-sitter-langs :ensure t)
-
-(use-package lsp-mode :ensure t :config (setq lsp-enable-file-watchers nil))
-(use-package lsp-ui :ensure)
 
 ;;(setq lsp-enable-on-type-formatting nil)
 (setq-default indent-tabs-mode nil)
@@ -107,6 +79,9 @@
 (use-package css-mode :hook ((css-mode . emmet-mode) (css-mode . lsp)) :config (setq css-indent-offset 2))
 
 (add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-mode))
+
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(use-package web-mode :hook ((web-mode. emmet-mode) (web-mode . lsp)))
 
 ;;(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 ;; (add-hook 'js2-mode-hook 'skewer-mode)
@@ -188,9 +163,11 @@
  '(add-to-list 'company-backends 'company-omnisharp))
 (use-package csharp-mode
   :mode (("\\.cs\\'" . csharp-mode))
-  :hook ((csharp-mode . lsp)
-         (csharp-mode  . flycheck-mode))
-         (csharp-mode  . company-mode)
+  :hook ((omnisharp-start-omnisharp-server)
+         (csharp-mode . lsp)
+         (csharp-mode  . flycheck-mode)
+         (csharp-mode . omnisharp-mode)
+         (csharp-mode  . company-mode))
 
   :config ((setq indent-tabs-mode nil)
            (setq c-syntactic-indentation t)
@@ -200,12 +177,7 @@
            (setq tab-width 4)
            (setq evil-shift-width 4)))
 
-
-
-
-
-
-(use-package yasnippet :ensure :config (yas-global-mode))
+(load-file "~/dev/sharper/sharper.el")
 
 
 
