@@ -26,9 +26,15 @@
 ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
 (cua-mode 1)
 
-(if window-system
+(if (daemonp)
     (progn
-      (load-theme 'manoj-dark)))
+      (load-theme 'boron)
+      (fringe-mode 0))
+  
+  (if window-system
+      (load-theme 'modus-vivendi)
+    (xterm-mouse-mode 1))
+  )
 
 
 (column-number-mode 1)
@@ -57,130 +63,24 @@
       vc-follow-symlinks t)
 
 
-(load "~/dev/emacs-conf/ide.el")
-
-
 ;;(setq lsp-enable-on-type-formatting nil)
 (setq-default indent-tabs-mode nil)
 (setq-default electric-indent-inhibit t)
 (setq indent-tabs-mode nil)
-(setq web-mode-enable-auto-opening nil)
-(setq web-mode-enable-auto-pairing nil)
-(setq web-mode-enable-auto-closing nil)
-(setq web-mode-enable-auto-quoting nil)
-(setq web-mode-enable-auto-expanding nil)
-(setq web-mode-enable-auto-indentation nil)
-;;(setq web-mode-code-indent-offset 2)
 
-;; (use-package emmet-mode :ensure t)
+(load "~/dev/emacs-conf/ide.el")
 
-(use-package html-mode :hook ((css-mode . emmet-mode) (css-mode . lsp)))
-
-(use-package css-mode :hook ((css-mode . emmet-mode) (css-mode . lsp)) :config (setq css-indent-offset 2))
-
-(add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-mode))
-
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(use-package web-mode :hook ((web-mode. emmet-mode) (web-mode . lsp)))
-
-;;(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-;; (add-hook 'js2-mode-hook 'skewer-mode)
-;; (add-hook 'css-mode-hook 'skewer-css-mode)
-;; (add-hook 'html-mode-hook 'skewer-html-mode)
-;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-;; (use-package js2-mode
-;;   :hook ((js2-mode . company-mode)
-;; 		 (js2-mode . lsp)))
-  
-
-;; (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
-;; (use-package rust-ts-mode
-;;   :hook ((rust-ts-mode . lsp)
-;; 		 (rust-ts-mode . company-mode)))
-
-(use-package rust-mode
-  :hook ((rust-mode . lsp)
-		 (rust-mode . company-mode)))
-
-
-
-
-;;(load "~/.emacs.d/eglot-booster/eglot-booster.el")
-;; (use-package eglot-booster
-;; 	:after eglot
-;; 	:config	(eglot-booster-mode))
-
-;;(use-package eglot
-;;  :custom
-;;  (fset #'jsonrpc--log-event #'ignore)
-;;  (setf (plist-get eglot-events-buffer-config :size) 0))
-
-(use-package c-ts-mode :mode (("\\.c\\'" . c-ts-mode)) :hook (c-ts-mode . eglot-ensure))
-
-;;(use-package lsp-pyright :ensure t)
-(use-package python-ts-mode
-  :mode (("\\.py\\'" . python-ts-mode))
-  :hook ((python-ts-mode . lsp)
-		 (python-ts-mode . company-mode))
-  :config (setq lsp-pyright-typechecking-mode "strict"))
-
-
-(defun php-init () (web-mode) (lsp))
-(add-to-list 'auto-mode-alist '("\\.php?\\'" . php-init))
-
-
-(use-package go-ts-mode
-  :mode (("\\.go\\'" . go-ts-mode)
-		 ("\\.mod\\'" . go-mod-ts-mode))
-  :hook ((go-ts-mode . company-mode)
-		(go-ts-mode . eglot-ensure)
-		(go-ts-mode . global-flycheck-mode)))
-
-
-(use-package typescript-ts-mode
-  :mode (("\\.ts\\'" . typescript-ts-mode))
-  :hook (typescript-ts-mode . eglot-ensure))
-
-;;(add-to-list 'load-path "~/.emacs.d/tsx-mode/")
-(setq typescript-indent-level 2)
-;;(add-hook 'typescript-mode-hook #'eglot-ensure)
-
-
-(add-hook 'dart-mode-hook 'lsp)
-(setq lsp-dart-sdk-dir "/home/sjlwa/snap/flutter/common/flutter/bin/cache/dart-sdk"
-      lsp-dart-flutter-sdk "/home/sjlwa/snap/flutter/common/flutter/"
-      flutter-sdk-path "/home/sjlwa/snap/flutter/common/flutter/")
-
-
-(use-package lsp-java :ensure
-  :mode (("\\.java\\'" . java-ts-mode))
-  :hook (java-ts-mode . lsp)
-  :config (yas-global-mode))
-
-
-(eval-after-load
- 'company
- '(add-to-list 'company-backends 'company-omnisharp))
-(use-package csharp-mode
-  :mode (("\\.cs\\'" . csharp-mode))
-  :hook ((omnisharp-start-omnisharp-server)
-         (csharp-mode . lsp)
-         (csharp-mode  . flycheck-mode)
-         (csharp-mode . omnisharp-mode)
-         (csharp-mode  . company-mode))
-
-  :config ((setq indent-tabs-mode nil)
-           (setq c-syntactic-indentation t)
-           (c-set-style "ellemtel")
-           (setq c-basic-offset 4)
-           (setq truncate-lines t)
-           (setq tab-width 4)
-           (setq evil-shift-width 4)))
-
-(load-file "~/dev/sharper/sharper.el")
-
-
-
+(load-file "~/dev/emacs-conf/ide/web.el")
+;;(load-file "~/dev/emacs-conf/ide/javascript.el")
+;;(load-file "~/dev/emacs-conf/ide/rust.el")
+;;(load-file "~/dev/emacs-conf/ide/c.el")
+;;(load-file "~/dev/emacs-conf/ide/python.el")
+;;(load-file "~/dev/emacs-conf/ide/php.el")
+;;(load-file "~/dev/emacs-conf/ide/golang.el")
+(load-file "~/dev/emacs-conf/ide/typescript.el")
+;;(load-file "~/dev/emacs-conf/ide/java.el")
+;;(load-file "~/dev/emacs-conf/ide/dart.el")
+(load-file "~/dev/emacs-conf/ide/csharp.el")
 
  (setq treesit-language-source-alist
        '(
@@ -210,19 +110,8 @@
 (add-hook 'after-init-hook #'(lambda ()
 							   (load "~/dev/emacs-conf/fuzzy.el")
 							   (load "~/dev/emacs-conf/bindings.el")
-							   (load "~/dev/emacs-conf/misc.el")
-
-							   ;; Package Setup
-							   (use-package diff-hl :defer t :ensure t :init (global-diff-hl-mode))
-							   (use-package projectile :ensure t :defer t)
-							   (use-package magit :ensure t :defer t)
-							   (use-package ag :ensure t :defer t)
-							   (use-package http :ensure t :defer t)
-							   (use-package expand-region :ensure t :defer t :bind (("S-SPC" . er/contract-region) ("C-SPC" . er/expand-region)))
-							   (use-package move-text :ensure t :defer t :bind (("M-S-<up>" . move-text-up) ("M-S-<down>" . move-text-down)))
-							   ;; (use-package format-alel :ensure t :defer t)
-							   ;;(use-package esup :ensure t :pin melpa :config (setq esup-depth 0)) ;; To use MELPA Stable use ":pin melpa-stable",
-							   
+							   (load "~/dev/emacs-conf/commands.el")
+							   (load "~/dev/emacs-conf/pkgconf.el")
 							   ))
 
 ;;(setq eshell-prompt-function 'sjlwa-eshell-prompt)
@@ -238,7 +127,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(omnisharp mermaid-mode lsp-java web-mode ellama rust-mode evil rainbow-mode multiple-cursors php-mode vmd-mode php-quickhelp dockerfile-mode lsp-pyright company-jedi elpy go-mode tree-sitter-langs tree-sitter standard-themes eldoc-overlay eldoc-box yaml-mode websocket web-server typescript-mode smex skewer-mode projectile pdf-tools paredit origami move-text magit lsp-ui lsp-dart list-utils js2-refactor iedit http hover helm format-all flycheck expand-region esup emmet-mode dumb-jump dired-sidebar diff-hl coverlay company-web company-quickhelp clang-format arduino-mode ag)))
+   '(editorconfig csproj-mode verb omnisharp mermaid-mode lsp-java web-mode ellama rust-mode evil rainbow-mode multiple-cursors php-mode vmd-mode php-quickhelp dockerfile-mode lsp-pyright company-jedi elpy go-mode tree-sitter-langs tree-sitter standard-themes eldoc-overlay eldoc-box yaml-mode websocket web-server smex skewer-mode projectile pdf-tools paredit origami move-text magit lsp-ui lsp-dart list-utils js2-refactor iedit http hover helm format-all flycheck expand-region esup emmet-mode dumb-jump dired-sidebar diff-hl coverlay company-web company-quickhelp clang-format arduino-mode ag)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

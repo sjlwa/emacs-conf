@@ -18,6 +18,8 @@
 
 (use-package yasnippet :config (yas-global-mode))
 
+(add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-mode))
+
 ;; (use-package tree-sitter :ensure t)
 ;; (use-package tree-sitter-langs :ensure t)
 
@@ -146,3 +148,19 @@
 
 ;;       ;; append generated code to prompt
 ;;       (write-region spot end hist 'append 'silent))))
+
+
+
+
+
+
+
+;;(load "~/.emacs.d/eglot-booster/eglot-booster.el")
+;; (use-package eglot-booster
+;; 	:after eglot
+;; 	:config	(eglot-booster-mode))
+
+;;(use-package eglot
+;;  :custom
+;;  (fset #'jsonrpc--log-event #'ignore)
+;;  (setf (plist-get eglot-events-buffer-config :size) 0))

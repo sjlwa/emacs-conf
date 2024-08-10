@@ -17,6 +17,7 @@
 					   (seq "*gopls" (+ anything))
                        "*Help*"
                        (seq "*jdtls" (+ anything))
+                       (seq "*jsts*" (+ anything))
                        (seq "*lsp-" (+ anything))
                        (seq "magit" (+ anything))
                        "*Messages*"
