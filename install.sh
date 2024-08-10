@@ -21,3 +21,6 @@ fi
 ln -s $(pwd)/emacs.el ~/.emacs
 echo "ln -s "$(pwd)"/emacs.el ~/.emacs"
 echo -e "\e[35mdone!"
+
+
+# ln -s "$(pwd)"/eshell.desktop ~/.local/share/applications/eshell.desktop

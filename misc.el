@@ -134,3 +134,16 @@
       '(("TODO" . org-todo)
         ("DOING" . org-drawer)
         ("DONE" . org-done))))
+
+
+(defun ee (&optional args)
+  "Starts a new detached Emacs instance."
+  (interactive)
+  (let ((process-connection-type nil)  ; Use a pipe instead of a pty
+        (default-directory "~/"))      ; Set the default directory
+    (start-process
+     "detached-emacs"                  ; Process name
+     nil                               ; Buffer (nil means no buffer)
+     "sh"                              ; Shell
+     "-c"                              ; Run command
+     (concat "nohup emacs " args " > /dev/null 2>&1 & disown"))))
