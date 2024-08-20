@@ -11,6 +11,7 @@
                        "*compilation*"
                        "*Compile-Log*"
                        "*Completions*"
+                       "*company-documentation*"
 					   (seq "*css" (+ anything))
                        (seq "*EGLOT" (+ anything))
                        (seq "*Flymake" (+ anything))
@@ -21,6 +22,7 @@
                        (seq "*lsp-" (+ anything))
                        (seq "magit" (+ anything))
                        "*Messages*"
+                       "OmniServer"
                        (seq "*omnisharp" (+ anything))
                        "*Packages*"
                        "*pylsp*"

@@ -46,13 +46,11 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings 'meta)
 (setq-default tab-width 4)
-(setq tooltip-delay 0.1)
-(setq eldoc-idle-delay 0)
 
 
 (with-eval-after-load 'org
-  (setq org-support-shift-select t)
-  (setq org-startup-indented t)
+  (setq org-support-shift-select t
+        org-startup-indented t)
   (set-org-mode-tasks-status)
   (add-hook 'org-mode-hook #'visual-line-mode))
 
@@ -60,13 +58,16 @@
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
       auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-saved-files/" t))
       dired-kill-when-opening-new-dired-buffer t
-      vc-follow-symlinks t)
+      vc-follow-symlinks t
+      tooltip-delay 0.1
+      eldoc-idle-delay 0
+      indent-tabs-mode nil)
 
 
 ;;(setq lsp-enable-on-type-formatting nil)
 (setq-default indent-tabs-mode nil)
 (setq-default electric-indent-inhibit t)
-(setq indent-tabs-mode nil)
+
 
 (load "~/dev/emacs-conf/ide.el")
 
