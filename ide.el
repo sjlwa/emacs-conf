@@ -4,15 +4,17 @@
         company-minimum-prefix-length 1
         company-show-numbers t
         company-tooltip-offset-display 'lines
-        company-tooltip-align-annotations nil)
+        company-tooltip-align-annotations nil
+        company-transformers '(delete-consecutive-dups
+                               company-sort-by-occurrence))
   (global-company-mode t))
 
 (use-package company-quickhelp :config (company-quickhelp-mode))
 
 (use-package lsp-mode
   :config
-  (setq lsp-enable-file-watchers nil)
-  (setq lsp-apply-edits-after-file-operations nil))
+  (setq lsp-apply-edits-after-file-operations nil
+        lsp-enable-file-watchers nil))
 
 (use-package lsp-ui)
 
