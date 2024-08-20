@@ -88,13 +88,21 @@
     (setq mode-line-format (default-value 'mode-line-format)))
   (force-mode-line-update))
 
+
 (defun eshell-init-setup ()
   (company-mode -1)
   (setq eshell-visual-commands
-        (append eshell-visual-commands '("git" "dotnet")))
-  (setq eshell-hist-ignoredups t))
+        (append eshell-visual-commands '("git" "dotnet" "ps")))
+  (setq eshell-hist-ignoredups t)
+  (esh-autosuggest-mode))
 
 
+(defun sjlwa/eshell-tab-exit-close ()
+  (interactive)
+  (if (eq major-mode 'eshell-mode)
+      (progn
+        (kill-buffer (current-buffer))
+        (tab-close))))
 
 
 
@@ -139,8 +147,7 @@
 (defun ee (&optional args)
   "Starts a new detached Emacs instance."
   (interactive)
-  (let ((process-connection-type nil)  ; Use a pipe instead of a pty
-        (default-directory "~/"))      ; Set the default directory
+  (let ((process-connection-type nil)) ; Use a pipe instead of a pty 
     (start-process
      "detached-emacs"                  ; Process name
      nil                               ; Buffer (nil means no buffer)

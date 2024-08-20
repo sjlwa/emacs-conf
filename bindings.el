@@ -66,5 +66,13 @@
 ;;                   (lambda () (interactive)
 ;;                     (sjlwa/select-tab-by-number__event-handler))))
 
+(global-set-key (kbd "C-d") 'sjlwa/eshell-tab-exit-close)
+
 
 (define-key icomplete-minibuffer-map (kbd "TAB") #'my-icomplete-force-complete)
+
+;??????
+;;(global-set-key (kbd "C-c") 'kill-ring-save)
+;; (add-hook 'term-mode-hook
+;;           (lambda ()
+;;             (local-set-key (kbd "C-c") 'kill-ring-save)))
