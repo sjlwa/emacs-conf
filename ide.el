@@ -67,13 +67,16 @@
 ;;   )
 
 
-(use-package ellama
+(defun ellama-init ()
+  "Initialize ellama"
+  (interactive)
+  (use-package ellama
   :init
   (setopt ellama-language "English")
   (require 'llm-ollama)
   (setopt ellama-provider
 		  (make-llm-ollama
-		   :chat-model "llama3.1" :embedding-model "llama3.1")))
+		   :chat-model "llama3.1" :embedding-model "llama3.1"))))
 
 
 ;; (load-file "~/.emacs.d/emacs-copilot/copilot.el")
