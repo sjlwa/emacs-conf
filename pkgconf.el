@@ -17,4 +17,9 @@
 (use-package expand-region :ensure t :defer t :bind (("S-SPC" . er/contract-region) ("C-SPC" . er/expand-region)))
 (use-package move-text :ensure t :defer t :bind (("M-S-<up>" . move-text-up) ("M-S-<down>" . move-text-down)))
 ;; (use-package format-alel :ensure t :defer t)
-;;(use-package esup :ensure t :pin melpa :config (setq esup-depth 0)) ;; To use MELPA Stable use ":pin melpa-stable",
+
+(use-package esup
+  :ensure t
+  :config
+  ;; (setq esup-depth 0)
+  (setq esup-user-init-file (file-truename "~/.emacs")))
