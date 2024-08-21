@@ -10,13 +10,12 @@
          (csharp-mode . omnisharp-mode)
          (csharp-mode  . company-mode))
 
-  :config ((setq indent-tabs-mode nil)
-           (setq c-syntactic-indentation t)
-           (c-set-style "ellemtel")
-           (setq c-basic-offset 4)
-           (setq truncate-lines t)
-           (setq tab-width 4)
-           (setq evil-shift-width 4)))
-
-(load-file "~/dev/sharper/sharper.el")
+  :config ((load-file "~/dev/sharper/sharper.el")
+           (setq indent-tabs-mode nil
+                 c-syntactic-indentation t
+                 c-basic-offset 4
+                 truncate-lines t
+                 tab-width 4
+                 evil-shift-width 4)
+           (c-set-style "ellemtel")))
 
