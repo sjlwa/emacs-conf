@@ -27,12 +27,11 @@
       (fringe-mode 0))
   
   (if window-system
-      (load-theme 'modus-vivendi)
-    (xterm-mouse-mode 1))
-  )
+      (load-theme 'tango-dark)
+    (xterm-mouse-mode 1)))
 
 
-(column-number-mode 1)
+(column-number-mode t)
 (delete-selection-mode +1)
 (global-goto-address-mode +1)
 (electric-pair-mode t)
@@ -40,7 +39,7 @@
 (put 'dired-find-alternate-file 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings 'meta)
-(setq-default tab-width 4)
+
 
 
 (with-eval-after-load 'org
@@ -60,9 +59,9 @@
 
 
 ;;(setq lsp-enable-on-type-formatting nil)
-(setq-default indent-tabs-mode nil)
-(setq-default electric-indent-inhibit t)
-
+(setq-default indent-tabs-mode nil
+              electric-indent-inhibit t
+              tab-width 4)
 
 (load "~/dev/emacs-conf/ide.el")
 
