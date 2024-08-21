@@ -18,11 +18,6 @@
 ;; (blink-cursor-mode -1)
 
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-
-
-
 ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
 (cua-mode 1)
 
