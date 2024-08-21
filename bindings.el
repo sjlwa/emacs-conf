@@ -1,14 +1,3 @@
-;; Tab behaviour
-(defun sjlwa/tab ()
-  (interactive)
-  ;; emmet expansion
-  (let ((last-char-before-nil
-         (not (or (eq (char-before) 9) ;; tab
-                  (eq (char-before) 10) ;; new line
-                  (eq (char-before) 32))))) ;; space
-    (cond ((and last-char-before-nil (eq major-mode 'web-mode))
-           (emmet-expand-line nil)))))
-
 (global-set-key [backtab] 'sjlwa/tab)
 (global-set-key "\t" 'indent-rigidly)
 

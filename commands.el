@@ -154,3 +154,13 @@
      "sh"                              ; Shell
      "-c"                              ; Run command
      (concat "nohup emacs " args " > /dev/null 2>&1 & disown"))))
+
+(defun sjlwa/tab ()
+  "Tabs or Expands Emmet abbreviations in Web Mode on tab press."
+  (interactive)
+  (let ((last-char-before-nil
+         (not (or (eq (char-before) 9) ;; tab
+                  (eq (char-before) 10) ;; new line
+                  (eq (char-before) 32))))) ;; space
+    (cond ((and last-char-before-nil (eq major-mode 'web-mode))
+           (emmet-expand-line nil)))))
