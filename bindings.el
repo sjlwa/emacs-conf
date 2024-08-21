@@ -2,61 +2,55 @@
 (global-set-key "\t" 'indent-rigidly)
 
 
-;; Files / buffers
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
-(global-set-key (kbd "C-w") 'kill-buffer)
-(global-set-key (kbd "C-z") 'undo-only)
-(global-set-key (kbd "C-S-z") 'undo-redo)
+(mapc (lambda (pair)
+        (global-set-key (kbd (car pair)) (cdr pair)))
+      '(
 
-;; recursive search
-(global-set-key (kbd "C-S-s") 'ag)
+        ;; Files / buffers
+        ("C-w" . kill-buffer)
+        ("C-z" . undo-only)
+        ("C-S-z" . undo-redo)
+        ;; ("C-x C-r" . 'recentf-open-files)
 
-;; (global-set-key (kbd "C-s") 'occur)
+        ;; recursive search
+        ("C-S-s" . ag)
 
-;; Scale text
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
+        ;; scale text
+        ("C-+" . text-scale-increase)
+        ("C--" . text-scale-decrease)
 
-(global-set-key (kbd "C-a") 'mark-whole-buffer)
+        ("C-a" . mark-whole-buffer)
 
-;; (setq org-agenda-directory '("~/OrgAgenda"))
-;; (global-set-key (kbd "C-c a") 'org-agenda)
+        ("<s-left>" . beginning-of-line)
+        ("<s-right>" . end-of-line)
 
-(global-set-key (kbd "<s-left>") 'beginning-of-line)
-(global-set-key (kbd "<s-right>") 'end-of-line)
+        ("C-c SPC" . hs-toggle-hiding)
 
+        ("C-M-<return>" . mc/mark-all-in-region)
+        ;;("C-M-<down>" . mc/mark-next-like-this)
 
-(global-set-key (kbd "C-c SPC") 'hs-toggle-hiding)
-	
-(global-set-key (kbd "C-M-<return>") 'mc/mark-all-in-region)
-;;(global-set-key (kbd "C-M-<down>") 'mc/mark-next-like-this)
+        ("C-<backspace>" . ryanmarcus/backward-kill-word)
 
-(global-set-key (kbd "C-<backspace>") 'ryanmarcus/backward-kill-word)
+        ("ESC ESC ESC" . sjlwa/esc-esc-esc)
 
-(global-set-key (kbd "ESC ESC ESC") 'sjlwa/esc-esc-esc)
+        ("C-w" . sjlwa/ctrl_w)
 
-(global-set-key (kbd "C-w") 'sjlwa/ctrl_w)
+        ("C-S-t" . sjlwa/tab-new)
 
-(global-set-key (kbd "C-S-t") 'sjlwa/tab-new)
+        ("M-0" . (lambda () (interactive) (sjlwa/select-tab-by-number 0)))
+        ("M-1" . (lambda () (interactive) (sjlwa/select-tab-by-number 1)))
+        ("M-2" . (lambda () (interactive) (sjlwa/select-tab-by-number 2)))
+        ("M-3" . (lambda () (interactive) (sjlwa/select-tab-by-number 3)))
+        ("M-4" . (lambda () (interactive) (sjlwa/select-tab-by-number 4)))
+        ("M-5" . (lambda () (interactive) (sjlwa/select-tab-by-number 5)))
+        ("M-6" . (lambda () (interactive) (sjlwa/select-tab-by-number 6)))
+        ("M-7" . (lambda () (interactive) (sjlwa/select-tab-by-number 7)))
+        ("M-8" . (lambda () (interactive) (sjlwa/select-tab-by-number 8)))
+        ("M-9" . (lambda () (interactive) (sjlwa/select-tab-by-number 9)))
 
-(global-set-key (kbd "M-0") (lambda () (interactive) (sjlwa/select-tab-by-number 0)))
-(global-set-key (kbd "M-1") (lambda () (interactive) (sjlwa/select-tab-by-number 1)))
-(global-set-key (kbd "M-2") (lambda () (interactive) (sjlwa/select-tab-by-number 2)))
-(global-set-key (kbd "M-3") (lambda () (interactive) (sjlwa/select-tab-by-number 3)))
-(global-set-key (kbd "M-4") (lambda () (interactive) (sjlwa/select-tab-by-number 4)))
-(global-set-key (kbd "M-5") (lambda () (interactive) (sjlwa/select-tab-by-number 5)))
-(global-set-key (kbd "M-6") (lambda () (interactive) (sjlwa/select-tab-by-number 6)))
-(global-set-key (kbd "M-7") (lambda () (interactive) (sjlwa/select-tab-by-number 7)))
-(global-set-key (kbd "M-8") (lambda () (interactive) (sjlwa/select-tab-by-number 8)))
-(global-set-key (kbd "M-9") (lambda () (interactive) (sjlwa/select-tab-by-number 9)))
-;; TODO: bind M- 0 9 as loop
-;; (dotimes (i 9)
-;;   (global-set-key (kbsd "<M-down>")
-;;                   (lambda () (interactive)
-;;                     (sjlwa/select-tab-by-number__event-handler))))
+        ("C-d" . sjlwa/eshell-tab-exit-close)
 
-(global-set-key (kbd "C-d") 'sjlwa/eshell-tab-exit-close)
-
+        ))
 
 (define-key icomplete-minibuffer-map (kbd "TAB") #'my-icomplete-force-complete)
 
