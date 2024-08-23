@@ -58,6 +58,19 @@
 
         ("C-d" . sjlwa/eshell-tab-exit-close)
 
+        ("C-r" . replace-string)
+        ;; ("C-S-s" . isearch-backward)
+        ;; ("M-s" . ag)
+
+
+        ;; expand-region
+        ("S-SPC" . er/contract-region)
+        ("C-SPC" . er/expand-region)
+
+        ;; Move text
+        ("M-S-<up>"   . move-text-up)
+        ("M-S-<down>" . move-text-down)
+
         ))
 
 (define-key icomplete-minibuffer-map (kbd "TAB") #'my-icomplete-force-complete)

@@ -1,5 +1,4 @@
-(use-package company
-  :config
+(defun company-init-config ()
   (setq company-idle-delay 0
         company-minimum-prefix-length 1
         company-show-numbers t
@@ -7,25 +6,20 @@
         company-tooltip-align-annotations nil
         company-transformers '(delete-consecutive-dups
                                company-sort-by-occurrence))
-  (global-company-mode t))
+  (company-quickhelp-mode))
 
-(use-package company-quickhelp :config (company-quickhelp-mode))
-
-(use-package lsp-mode
-  :config
+(defun lsp-mode-init-config ()
   (setq lsp-apply-edits-after-file-operations nil
-        lsp-enable-file-watchers nil))
+        lsp-enable-file-watchers nil
+        lsp-diagnostics-flycheck-default-level 'info))
 
-(use-package lsp-ui)
 
-(use-package yasnippet :config (yas-global-mode))
+(add-hook 'company-mode-hook 'company-init-config)
+(add-hook 'lsp-mode-hook 'lsp-mode-init-config)
+(eval-after-load 'yasnippet '(yas-global-mode))
+(eval-after-load 'editorconfig '(editorconfig-mode 1))
 
 (add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-mode))
-
-;; (use-package tree-sitter :ensure t)
-;; (use-package tree-sitter-langs :ensure t)
-
-
 
 ;; (use-package lsp-sonarlint
 ;;   :config
@@ -45,13 +39,6 @@
 ;;   (lsp-sonarlint-enabled-analyzers '("omnisharp")))
 
 
-(use-package flycheck
-  :config (setq lsp-diagnostics-flycheck-default-level 'info))
-
-(use-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode 1))
 
 
 ;; (add-to-list 'eglot-server-programs

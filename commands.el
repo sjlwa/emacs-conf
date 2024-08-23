@@ -164,3 +164,46 @@
                   (eq (char-before) 32))))) ;; space
     (cond ((and last-char-before-nil (eq major-mode 'web-mode))
            (emmet-expand-line nil)))))
+
+(defun format@ ()
+  (interactive)
+  (lsp-format-buffer))
+
+
+(defun sjlwa/load-packages-sources ()
+  "Load the packages archives"
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (package-initialize))
+
+;; Lazy load extra package sources
+(advice-add 'list-packages :before #'sjlwa/load-packages-sources)
+
+
+
+(defun sjlwa/install-packages ()
+  (interactive)
+  (sjlwa/load-packages-sources)
+
+  (package-install 'ag)
+  (package-install 'diff-hl)
+  (package-install 'magit)
+  (package-install 'projectile)
+  (package-install 'http)
+  (package-install 'expand-region)
+  (package-install 'move-text)
+  (package-install 'esup)
+
+  ;; (package-install 'format-alel)
+
+  (package-install 'company)
+  (package-install 'company-quickhelp)
+  (package-install 'lsp-mode)
+  (package-install 'lsp-ui)
+  (package-install 'tree-sitter)
+  (package-install 'tree-sitter-langs)
+  (package-install 'flycheck)
+  (package-install 'editorconfig)
+  (package-install 'yasnippet)
+  
+  (print "Done."))
