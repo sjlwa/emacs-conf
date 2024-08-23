@@ -185,6 +185,7 @@
   (interactive)
   (sjlwa/load-packages-sources)
 
+  ;; Essentials
   (package-install 'ag)
   (package-install 'diff-hl)
   (package-install 'magit)
@@ -193,9 +194,9 @@
   (package-install 'expand-region)
   (package-install 'move-text)
   (package-install 'esup)
-
   ;; (package-install 'format-alel)
 
+  ;; Ide advanced features
   (package-install 'company)
   (package-install 'company-quickhelp)
   (package-install 'lsp-mode)
@@ -217,5 +218,12 @@
 
   ;; Languages
   (package-install 'csharp-mode)
-  
+  ;; (package-install 'lsp-pyright)
+
+  ;; (package-install 'js2-mode)
+  ;; (package-install 'skewer-mode)
+
+  (package-install 'lsp-java)
+  ;; (package-install 'dart-mode)
+
   (print "Done."))

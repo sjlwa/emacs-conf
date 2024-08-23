@@ -60,20 +60,6 @@
               electric-indent-inhibit t
               tab-width 4)
 
-(load "~/dev/emacs-conf/ide.el")
-
-(load-file "~/dev/emacs-conf/ide/web.el")
-;;(load-file "~/dev/emacs-conf/ide/javascript.el")
-;;(load-file "~/dev/emacs-conf/ide/rust.el")
-;;(load-file "~/dev/emacs-conf/ide/c.el")
-;;(load-file "~/dev/emacs-conf/ide/python.el")
-;;(load-file "~/dev/emacs-conf/ide/php.el")
-;;(load-file "~/dev/emacs-conf/ide/golang.el")
-(load-file "~/dev/emacs-conf/ide/typescript.el")
-;;(load-file "~/dev/emacs-conf/ide/java.el")
-;;(load-file "~/dev/emacs-conf/ide/dart.el")
-(load-file "~/dev/emacs-conf/ide/csharp.el")
-
 (setq treesit-language-source-alist
       '(
 	    (bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -98,7 +84,8 @@
         (rust "https://github.com/tree-sitter/tree-sitter-rust.git")
         (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-
+(load "~/dev/emacs-conf/ide.el")
+(load "~/dev/emacs-conf/langs.el")
 (load "~/dev/emacs-conf/fuzzy.el")
 (load "~/dev/emacs-conf/commands.el")
 (load "~/dev/emacs-conf/bindings.el")
