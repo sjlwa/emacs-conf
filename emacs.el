@@ -1,8 +1,9 @@
-;; Temporarily increase `gc-cons-hold' when loading to speed up startup.
+;; temporarily increase `gc-cons-hold' when loading to speed up startup.
 (setq gc-cons-threshold most-positive-fixnum
       file-name-handler-alist nil ;; Avoid analyzing files when loading remote files.
       inhibit-startup-screen t
-	  warning-minimum-level :emergency)
+	  warning-minimum-level :emergency
+      package-enable-at-startup nil)
 
 
 (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000)))
