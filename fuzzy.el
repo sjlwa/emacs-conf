@@ -45,8 +45,4 @@
 
 (setq switch-to-prev-buffer-skip 'my-buffer-skip-p)
 
-(use-package fido-mode
-  :init (fido-vertical-mode)
-  :bind (("C-o" . bs-show)
-		 ;;("C-o" . switch-to-buffer)
-         ("C-p" . my-find-file)))
+(fido-vertical-mode)

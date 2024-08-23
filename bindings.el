@@ -12,6 +12,9 @@
         ("C-S-z" . undo-redo)
         ;; ("C-x C-r" . 'recentf-open-files)
 
+        ("C-p" . sjlwa/find-file)
+        ("C-o" . bs-show)
+
         ;; recursive search
         ("C-S-s" . ag)
 

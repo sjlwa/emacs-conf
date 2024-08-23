@@ -15,7 +15,7 @@
   (let ((status (shell-command-to-string (get-def-dir-status-cmd))))
     (> (length status) 0)))
 
-(defun my-find-file ()
+(defun sjlwa/find-file ()
   (interactive)
   (if (isrepo)
       (call-interactively 'projectile-find-file)

@@ -104,8 +104,8 @@
 
 (add-hook 'after-init-hook #'(lambda ()
 							   (load "~/dev/emacs-conf/fuzzy.el")
-							   (load "~/dev/emacs-conf/bindings.el")
 							   (load "~/dev/emacs-conf/commands.el")
+							   (load "~/dev/emacs-conf/bindings.el")
 							   (load "~/dev/emacs-conf/pkgconf.el")
 							   ))
 
