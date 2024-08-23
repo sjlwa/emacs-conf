@@ -206,6 +206,8 @@
   (package-install 'editorconfig)
   (package-install 'yasnippet)
   (package-install 'esh-autosuggest)
+  ;; (package-install 'ellama)
+  ;; (package-install 'llm-ollama)
 
   ;; Web
   (package-install 'emmet-mode)
