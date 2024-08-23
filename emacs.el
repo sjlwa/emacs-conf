@@ -93,25 +93,18 @@
 (load "~/dev/emacs-conf/pkgconf.el")
 
 
+(add-hook 'after-init-hook 'global-diff-hl-mode)
+
+(with-eval-after-load 'esup
+  (setq esup-user-init-file (file-truename "~/.emacs"))
+  (setq esup-depth 0))
+;; (setq esup-init-user-file "/home/sjlwa/dev/emacs-conf/pkgconf.el")
+
+
 ;;(setq eshell-prompt-function 'sjlwa-eshell-prompt)
 ;;(setq eshell-highlight-prompt nil)
 (add-hook 'eshell-mode-hook 'eshell-init-setup)
 (add-hook 'after-change-major-mode-hook 'sjlwa/toggle-mode-line-based-on-mode)
 
-
-;;;;;;;;;;
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(esh-autosuggest editorconfig csproj-mode verb omnisharp mermaid-mode lsp-java web-mode ellama rust-mode evil rainbow-mode multiple-cursors php-mode vmd-mode php-quickhelp dockerfile-mode lsp-pyright company-jedi elpy go-mode tree-sitter-langs tree-sitter standard-themes eldoc-overlay eldoc-box yaml-mode websocket web-server smex skewer-mode projectile pdf-tools paredit origami move-text magit lsp-ui lsp-dart list-utils js2-refactor iedit http hover helm format-all flycheck expand-region esup emmet-mode dumb-jump dired-sidebar diff-hl coverlay company-web company-quickhelp clang-format arduino-mode ag)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 (put 'erase-buffer 'disabled nil)
 (put 'downcase-region 'disabled nil)
