@@ -108,8 +108,6 @@
 
 ;;(setq eshell-prompt-function 'sjlwa-eshell-prompt)
 ;;(setq eshell-highlight-prompt nil)
-(use-package esh-autosuggest :ensure t
-  :config (setq esh-autosuggest-use-company-map t))
 (add-hook 'eshell-mode-hook 'eshell-init-setup)
 (add-hook 'after-change-major-mode-hook 'sjlwa/toggle-mode-line-based-on-mode)
 

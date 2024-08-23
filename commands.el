@@ -91,9 +91,9 @@
 
 (defun eshell-init-setup ()
   (company-mode -1)
-  (setq eshell-visual-commands
-        (append eshell-visual-commands '("git" "dotnet" "ps")))
-  (setq eshell-hist-ignoredups t)
+  (setq eshell-visual-commands (append eshell-visual-commands '("git" "dotnet" "ps"))
+        eshell-hist-ignoredups t)
+  (setq esh-autosuggest-use-company-map t)
   (esh-autosuggest-mode))
 
 
@@ -205,6 +205,7 @@
   (package-install 'flycheck)
   (package-install 'editorconfig)
   (package-install 'yasnippet)
+  (package-install 'esh-autosuggest)
 
   ;; Web
   (package-install 'emmet-mode)
