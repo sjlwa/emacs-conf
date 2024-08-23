@@ -212,5 +212,8 @@
   ;; (package-install 'html-mode) ???
   ;; (package-install 'css-mode) ???
   ;; (package-install 'web-mode) ???
+
+  ;; Languages
+  (package-install 'csharp-mode)
   
   (print "Done."))

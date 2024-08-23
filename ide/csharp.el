@@ -1,21 +1,25 @@
+(defun csharp-init-modes ()
+  (company-mode)
+  (flycheck-mode)
+  (omnisharp-mode)
+  ;; (omnisharp-start-omnisharp-server)
+  (lsp-deferred))
+
+(defun csharp-init-config ()
+  ;; (load-file "~/dev/sharper/sharper.el")
+  (c-set-style "ellemtel")
+  (setq indent-tabs-mode nil
+        c-syntactic-indentation t
+        c-basic-offset 4
+        truncate-lines t
+        tab-width 4
+        evil-shift-width 4))
+
 (eval-after-load
  'company
  '(add-to-list 'company-backends 'company-omnisharp))
 
-(use-package csharp-mode
-  :mode (("\\.cs\\'" . csharp-mode))
-  :hook ((omnisharp-start-omnisharp-server)
-         (csharp-mode . lsp)
-         (csharp-mode  . flycheck-mode)
-         (csharp-mode . omnisharp-mode)
-         (csharp-mode  . company-mode))
+(add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-mode))
 
-  :config ((load-file "~/dev/sharper/sharper.el")
-           (setq indent-tabs-mode nil
-                 c-syntactic-indentation t
-                 c-basic-offset 4
-                 truncate-lines t
-                 tab-width 4
-                 evil-shift-width 4)
-           (c-set-style "ellemtel")))
-
+(add-hook 'csharp-mode-hook 'csharp-init-modes)
+(add-hook 'csharp-mode-hook 'csharp-init-config)
