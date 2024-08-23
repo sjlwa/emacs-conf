@@ -1,22 +1,23 @@
-(use-package emmet-mode
-  :ensure t)
+;; (add-hook 'html-mode-hook 'emmet-mode)
+;; (add-hook 'html-mode-hook 'lsp-deferred)
 
-(use-package html-mode
-  :hook ((css-mode . emmet-mode) (css-mode . lsp)))
 
-(use-package css-mode
-  :hook ((css-mode . emmet-mode) (css-mode . lsp))
-  :config (setq css-indent-offset 2))
+(add-hook 'css-mode-hook 'emmet-mode)
+(add-hook 'css-mode-hook 'lsp-deferred)
+(add-hook 'css-mode-hook
+          (lambda ()
+            (setq css-indent-offset 2)))
+
+
+(add-hook 'web-mode-hook
+          (lambda ()
+            (emmet-mode)
+            (lsp-deferred)
+            (setq web-mode-enable-auto-opening nil
+                  web-mode-enable-auto-pairing nil
+                  web-mode-enable-auto-closing nil
+                  web-mode-enable-auto-quoting nil
+                  web-mode-enable-auto-expanding nil
+                  web-mode-enable-auto-indentation nil)))
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-
-(use-package web-mode
-  :hook ((web-mode. emmet-mode) (web-mode . lsp))
-  :config
-  ;;(setq web-mode-code-indent-offset 2)
-  (setq web-mode-enable-auto-opening nil)
-  (setq web-mode-enable-auto-pairing nil)
-  (setq web-mode-enable-auto-closing nil)
-  (setq web-mode-enable-auto-quoting nil)
-  (setq web-mode-enable-auto-expanding nil)
-  (setq web-mode-enable-auto-indentation nil))

@@ -205,5 +205,11 @@
   (package-install 'flycheck)
   (package-install 'editorconfig)
   (package-install 'yasnippet)
+
+  ;; Web
+  (package-install 'emmet-mode)
+  ;; (package-install 'html-mode) ???
+  ;; (package-install 'css-mode) ???
+  ;; (package-install 'web-mode) ???
   
   (print "Done."))
