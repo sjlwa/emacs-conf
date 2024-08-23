@@ -6,6 +6,11 @@
         (global-set-key (kbd (car pair)) (cdr pair)))
       '(
 
+        ("M-<left>"  . windmove-left)
+        ("M-<right>" . windmove-right)
+        ("M-<up>"    . windmove-up)
+        ("M-<down>"  . windmove-down)
+
         ;; Files / buffers
         ("C-w" . kill-buffer)
         ("C-z" . undo-only)

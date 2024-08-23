@@ -38,9 +38,6 @@
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (put 'dired-find-alternate-file 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
-(windmove-default-keybindings 'meta)
-
-
 
 (with-eval-after-load 'org
   (setq org-support-shift-select t
