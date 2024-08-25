@@ -53,10 +53,11 @@
       vc-follow-symlinks t
       tooltip-delay 0.1
       eldoc-idle-delay 0
-      indent-tabs-mode nil)
+      indent-tabs-mode nil
+      initial-major-mode 'fundamental-mode
+      initial-scratch-message (concat "Emacs " emacs-version " - Hi"))
 
 
-;;(setq lsp-enable-on-type-formatting nil)
 (setq-default indent-tabs-mode nil
               electric-indent-inhibit t
               tab-width 4)
