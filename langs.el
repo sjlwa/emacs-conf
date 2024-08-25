@@ -10,7 +10,6 @@
   (eval-after-load 'company '(add-to-list 'company-backends 'company-omnisharp))
   
   (defun csharp-init-modes ()
-    (company-mode)
     (flycheck-mode)
     (omnisharp-mode)
     (lsp-deferred))
@@ -48,7 +47,6 @@
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.mod\\'" . go-mod-ts-mode))
 
-  (add-hook 'go-ts-mode 'company-mode)
   (add-hook 'go-ts-mode 'global-flycheck-mode)
   (add-hook 'go-ts-mode 'eglot-ensure))
 
@@ -68,7 +66,6 @@
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
   (add-hook 'js2-mode-hook 'skewer-mode)
-  (add-hook 'js2-mode-hook 'company-mode)
   (add-hook 'js2-mode-hook 'lsp-deferred))
 
 
@@ -85,7 +82,6 @@
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
 
   (add-hook 'python-ts-mode-hook 'lsp-deferred)
-  (add-hook 'python-ts-mode-hook 'company-mode)
 
   (eval-after-load 'python-ts-mode
     '(setq lsp-pyright-typechecking-mode "strict")))
@@ -95,9 +91,7 @@
 (defun load-lang--rust ()
   "Loads the required config for rust"
   ;; (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
-  ;; (add-hook 'rust-ts-mode 'company-mode)
   ;; (add-hook 'rust-ts-mode 'lsp-deferred)
-  (add-hook 'rust-mode 'company-mode)
   (add-hook 'rust-mode 'lsp-deferred))
 
 
@@ -106,8 +100,7 @@
   "Loads the required config for typescript mode"
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 
-  (add-hook 'typescript-ts-mode-hook 'lsp-deferred)
-  (add-hook 'typescript-ts-mode-hook 'company-mode))
+  (add-hook 'typescript-ts-mode-hook 'lsp-deferred))
 
 
 
@@ -138,6 +131,8 @@
 
 
 
+
+(add-hook 'prog-mode-hook 'company-mode)
 
 (load-lang--c)
 (load-lang--csharp)
