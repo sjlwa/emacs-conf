@@ -6,6 +6,7 @@
         http
         magit
         move-text
+        multiple-cursors
         projectile))
 
 (setq my-packages--languages
