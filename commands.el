@@ -168,3 +168,22 @@
 (defun format@ ()
   (interactive)
   (lsp-format-buffer))
+
+
+
+
+
+(defun sjlwa/read-file-str (filename)
+  "Return the contents of a file"
+  (with-temp-buffer
+    (insert-file-contents filename)
+    (buffer-string)))
+
+(defun sjlwa/eval-file (filename)
+  "Evaluate the contents of FILENAME and print the result or error."
+  (condition-case err
+      (let ((content (sjlwa/read-file-str filename)))
+        (let* ((forms (read (concat "(progn " content ")")))
+               (result (eval forms)))))
+    (error
+     (princ (format "Error %s: %S\n" filename err)))))
