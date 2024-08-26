@@ -1,19 +1,18 @@
-(defun get-def-dir-status-cmd ()
-  (format "git -C %s status 2>/dev/null" default-directory))
-
-
 (defun current-git-branch ()
-  (let ((branch
-         (ignore-errors
-           (shell-command-to-string "git branch --show-current 2> /dev/null"))))
-    (replace-regexp-in-string "\n" "" branch)))
-
+  "Get the current branch name of the current repository."
+  (with-temp-buffer
+    (when (= 0 (call-process "git" nil t nil "branch" "--show-current"))
+      (string-trim (buffer-string)))))
 
 (defun isrepo ()
-  "Verifica si el directorio actual es un repositorio Git."
-  (interactive)
-  (let ((status (shell-command-to-string (get-def-dir-status-cmd))))
-    (> (length status) 0)))
+  "Check whether current directory is a git repository"
+  (zerop
+   (call-process
+    "git" nil nil nil
+    "-C"
+    default-directory
+    "rev-parse"
+    "--is-inside-work-tree")))
 
 (defun sjlwa/find-file ()
   (interactive)
@@ -21,13 +20,14 @@
       (call-interactively 'projectile-find-file)
     (call-interactively 'ido-find-file)))
 
-;; copy working directory
 (defun sjlwa/cpwd ()
+  "Copy the current directory path"
   (interactive)
-  (let ((wd (nth 1 (s-split "Directory " (pwd)))))
-    (shell-command (concat "echo " wd " | xclip -sel clip &> /dev/null"))
-    (prin1 (concat "Copied: " wd))))
-
+  (let ((dir default-directory))
+    (with-temp-buffer
+      (insert dir)
+      (call-process-region (point-min) (point-max) "xclip" nil nil nil "-sel" "clip")
+      (message "Copied to clipboard: %s" dir))))
 
 (defun ryanmarcus/backward-kill-word ()
   "Remove all whitespace if the character behind the cursor is whitespace, otherwise remove a word."
@@ -40,7 +40,6 @@
                (backward-delete-char 1)))
     ;; otherwise, just do the normal kill word.
     (backward-kill-word 1)))
-
 
 (defun eshell/clear ()
   (interactive) (eshell/clear-scrollback))
