@@ -54,8 +54,19 @@
       tooltip-delay 0.1
       eldoc-idle-delay 0
       indent-tabs-mode nil
-      initial-major-mode 'fundamental-mode
-      initial-scratch-message (concat "Emacs " emacs-version " - Hi"))
+      initial-major-mode 'fundamental-mode)
+
+;; Insert initial scratch message directly
+(with-current-buffer "*scratch*"
+  (let* ((message (format "Emacs %s - Hi" emacs-version))
+         (width (window-total-width))
+         (height (window-total-height))
+         (padding-x (make-string (/ (- width (length message)) 2) ?\s))
+         (padding-y (make-string (/ (1- height) 2) ?\n)))
+    (erase-buffer)
+    (insert (concat padding-y padding-x message))
+    (put-text-property (point-min) (point-max) 'face '(:foreground "yellow"))))
+
 
 
 (setq-default indent-tabs-mode nil
