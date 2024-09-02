@@ -186,3 +186,29 @@
                (result (eval forms)))))
     (error
      (princ (format "Error %s: %S\n" filename err)))))
+
+
+(require 's)
+
+(defun sjlwa/ps-kill ()
+  "Search and kill process"
+  (interactive)
+
+  (delete-other-windows)
+  (let ((minibuffer-window (minibuffer-window)))
+    (select-window minibuffer-window)
+    (window-resize minibuffer-window (frame-height)))
+
+  (with-temp-buffer
+    (call-process "ps" nil t nil "-aux")
+    (let* ((ps (completing-read "kill -9 ? " (s-split "\n" (buffer-string))))
+           (ps-cols (split-string ps))
+           (pid (nth 1 ps-cols))
+           (pname (last ps-cols))
+           (confirm (completing-read (message "Are you sure to kill %S? " pname) '("No" "Yes"))))
+
+      (when (string= confirm "Yes")
+        (call-process "kill" nil nil nil "-9" pid)
+        (print pid)))))
+
+(defalias 'pskill 'sjlwa/ps-kill)
