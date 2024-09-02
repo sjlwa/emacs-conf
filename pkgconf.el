@@ -1,5 +1,6 @@
-(setq my-packages--essentials
-      '(ag
+(setq package-selected-packages
+      '(;; essentials
+        ag
         diff-hl
         esup
         expand-region
@@ -7,17 +8,18 @@
         magit
         move-text
         multiple-cursors
-        projectile))
+        projectile
+	    rainbow-delimiters
 
-(setq my-packages--languages
-      '(dart-mode
-        lsp-java
-        lsp-pyright
+        ;; languages
+        ;; dart-mode
+        ;; lsp-java
+        ;; lsp-pyright
         js2-mode
-        web-mode))
+        web-mode
 
-(setq my-packages--ide
-      '(company
+	    ;; ide
+	    company
         company-quickhelp
         editorconfig
         ellama
@@ -31,39 +33,21 @@
         ;; skewer-mode
         tree-sitter
         tree-sitter-langs
-        yasnippet))
+        yasnippet
 
-(setq my-packages--all
-      (append my-packages--essentials
-              my-packages--languages
-              my-packages--ide))
-
+	))
 
 (defun sjlwa-packages-source ()
   "Load the packages archives"
   (interactive)
-  ;;(require 'package)
+  (require 'package)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
   (package-initialize))
 
 ;; Lazy load extra package sources
 (advice-add 'list-packages :before #'sjlwa-packages-source)
 
-
-(defun sjlwa-packages-install ()
-  "Select sets of packages to install."
-  (interactive)
-  (let ((selected (completing-read "Select packages type: "
-                                   '(all essentials languages ide))))
-    (let ((selected-packages
-           (symbol-value (intern (concat "my-packages--" selected)))))
-      (sjlwa/packages-source)
-      ;; install selected packages
-      (dolist (package selected-packages)
-        (unless (package-installed-p package)
-          (package-install package)))))
-  (prin1 "Done."))
-
+(advice-add 'package-install-selected-packages :before #'sjlwa-packages-source)
 
 (defun prevent-package-selected-packages-update (&rest args)
   "Prevent package-selected-packages from being written to custom-file."

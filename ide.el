@@ -6,7 +6,8 @@
         company-tooltip-align-annotations nil
         company-transformers '(delete-consecutive-dups
                                company-sort-by-occurrence))
-  (company-quickhelp-mode))
+  (if (require 'company-quickhelp nil 'noerror)
+      (company-quickhelp-mode)))
 
 (defun lsp-mode-init-config ()
   (setq lsp-apply-edits-after-file-operations nil

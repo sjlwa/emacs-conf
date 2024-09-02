@@ -75,8 +75,8 @@
 
 (setq treesit-language-source-alist
       '(
-	    (bash "https://github.com/tree-sitter/tree-sitter-bash")
-	    (cmake "https://github.com/uyha/tree-sitter-cmake")
+        (bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (cmake "https://github.com/uyha/tree-sitter-cmake")
         (c "https://github.com/tree-sitter/tree-sitter-c")
         (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp.git")
         (css "https://github.com/tree-sitter/tree-sitter-css")
@@ -97,12 +97,12 @@
         (rust "https://github.com/tree-sitter/tree-sitter-rust.git")
         (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
+(load "~/dev/emacs-conf/fuzzy.el")
+(load "~/dev/emacs-conf/pkgconf.el")
 (load "~/dev/emacs-conf/ide.el")
 (load "~/dev/emacs-conf/langs.el")
-(load "~/dev/emacs-conf/fuzzy.el")
 (load "~/dev/emacs-conf/commands.el")
 (load "~/dev/emacs-conf/bindings.el")
-(load "~/dev/emacs-conf/pkgconf.el")
 
 
 (add-hook 'after-init-hook 'global-diff-hl-mode)

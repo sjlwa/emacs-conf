@@ -131,8 +131,12 @@
 
 
 
+(if (require 'company nil 'noerror)
+    (add-hook 'prog-mode-hook 'company-mode))
 
-(add-hook 'prog-mode-hook 'company-mode)
+(if (require 'rainbow-delimiters nil 'noerror)
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
 
 (load-lang--c)
 (load-lang--csharp)
