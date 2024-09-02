@@ -19,7 +19,7 @@
 (eval-after-load 'yasnippet '(yas-global-mode))
 (eval-after-load 'editorconfig '(editorconfig-mode 1))
 
-(add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-ts-mode))
 
 ;; (use-package lsp-sonarlint
 ;;   :config

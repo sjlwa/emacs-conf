@@ -10,8 +10,7 @@
         projectile))
 
 (setq my-packages--languages
-      '(csharp-mode
-        dart-mode
+      '(dart-mode
         lsp-java
         lsp-pyright
         js2-mode
