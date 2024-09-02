@@ -1,7 +1,11 @@
-emacs.background: #000
-emacs.foreground: #eee
+emacs.background: #22241f
+emacs.foreground: white
 emacs.geometry: 90x35
-emacs.font: Iosevka 16
+emacs.font: Iosevka Light 16
 emacs.menuBar: off
 emacs.toolBar: off
 emacs.verticalScrollBars: off
+emacs.bitmapIcon: off
+emacs.cursorBlink: off
+emacs.fontBackend: xft
+Xcursor.size: 24
