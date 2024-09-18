@@ -212,3 +212,9 @@
         (print pid)))))
 
 (defalias 'pskill 'sjlwa/ps-kill)
+
+(defun eshell-define-config ()
+  ;;(setq eshell-prompt-function 'sjlwa-eshell-prompt)
+  ;;(setq eshell-highlight-prompt nil)
+  (add-hook 'eshell-mode-hook 'eshell-init-setup)
+  (add-hook 'after-change-major-mode-hook 'sjlwa/toggle-mode-line-based-on-mode))
