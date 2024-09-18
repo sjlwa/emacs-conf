@@ -89,7 +89,7 @@
 
 
 (defun eshell-init-setup ()
-  ;; (company-mode -1) ;; Disable company-mode if esh-autosuggest is active
+  (company-mode -1)
   (setq eshell-visual-commands (append eshell-visual-commands '("git" "dotnet" "ps"))
         eshell-hist-ignoredups t)
   (setq esh-autosuggest-use-company-map t)

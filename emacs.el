@@ -31,6 +31,8 @@
       (load-theme 'tango-dark)
     (xterm-mouse-mode 1)))
 
+;; Enable mouse features
+(xterm-mouse-mode 1)
 
 (column-number-mode t)
 (delete-selection-mode +1)
