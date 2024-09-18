@@ -41,9 +41,6 @@
     ;; otherwise, just do the normal kill word.
     (backward-kill-word 1)))
 
-(defun eshell/clear ()
-  (interactive) (eshell/clear-scrollback))
-
 (defun sjlwa/ctrl_w ()
   (interactive)
   (if (eq major-mode 'eshell-mode)
@@ -52,20 +49,6 @@
 
 (defun sjlwa/esc-esc-esc () (interactive)
   (if (minibufferp) (keyboard-escape-quit)))
-
-(defalias 'terminal 'eshell)
-
-(defun sjlwa/open-eshell-tab-new ()
-  "Directly open a new tab with eshell mode enabled"
-  (tab-bar-new-tab)
-  (let ((current-prefix-arg '(4)))
-         (call-interactively 'eshell)))
-
-(defun sjlwa/tab-new ()
-  "Open eshell tab if current buffer is eshell"
-  (interactive)
-  (if (eq major-mode 'eshell-mode)
-      (sjlwa/open-eshell-tab-new)))
 
 (defun sjlwa/select-tab-by-number (num)
   "Select tab by number, treating 0 as tab 10."
@@ -87,45 +70,8 @@
     (setq mode-line-format (default-value 'mode-line-format)))
   (force-mode-line-update))
 
-
-(defun eshell-init-setup ()
-  (company-mode -1)
-  (setq eshell-visual-commands (append eshell-visual-commands '("git" "dotnet" "ps"))
-        eshell-hist-ignoredups t)
-  (setq esh-autosuggest-use-company-map t)
-  (esh-autosuggest-mode))
-
-
-(defun sjlwa/eshell-tab-exit-close ()
-  (interactive)
-  (if (eq major-mode 'eshell-mode)
-      (progn
-        (kill-buffer (current-buffer))
-        (tab-close))))
-
-
-
 (defun with-face (str &rest face-plist)
   (propertize str 'face face-plist))
-
-;; (defun sjlwa-eshell-prompt ()
-;;   (concat
-;;    (with-face (abbreviate-file-name (eshell/pwd))
-;;               :background color-prompt-pwd-bg :foreground color-prompt-pwd-fg)
-
-;;    " "
-
-;;    (with-face (let ((branch (current-git-branch)))
-;;                 (if (string= branch "")
-;;                     ""
-;;                   (concat branch " ")))
-;;               :foreground color-prompt-branch)
-
-;;      (if (= (user-uid) 0)
-;;          (with-face "#" :background "black" :foreground "#e42")
-;;        (with-face "$" :foreground color-prompt-shebang))
-;;      " "))
-
 
 (defun my-icomplete-force-complete ()
   "Force completion of the current icomplete candidate."
@@ -134,14 +80,12 @@
     (let ((icomplete-prospects-height 1))
       (icomplete-force-complete))))
 
-
 (defun set-org-mode-tasks-status ()
   (setq org-todo-keywords '((sequence "TODO" "DOING" "|" "DONE")))
   (setq org-todo-keyword-faces
       '(("TODO" . org-todo)
         ("DOING" . org-drawer)
         ("DONE" . org-done))))
-
 
 (defun ee (&optional args)
   "Starts a new detached Emacs instance."
@@ -168,10 +112,6 @@
   (interactive)
   (lsp-format-buffer))
 
-
-
-
-
 (defun sjlwa/read-file-str (filename)
   "Return the contents of a file"
   (with-temp-buffer
@@ -186,7 +126,6 @@
                (result (eval forms)))))
     (error
      (princ (format "Error %s: %S\n" filename err)))))
-
 
 (require 's)
 
@@ -212,9 +151,3 @@
         (print pid)))))
 
 (defalias 'pskill 'sjlwa/ps-kill)
-
-(defun eshell-define-config ()
-  ;;(setq eshell-prompt-function 'sjlwa-eshell-prompt)
-  ;;(setq eshell-highlight-prompt nil)
-  (add-hook 'eshell-mode-hook 'eshell-init-setup)
-  (add-hook 'after-change-major-mode-hook 'sjlwa/toggle-mode-line-based-on-mode))

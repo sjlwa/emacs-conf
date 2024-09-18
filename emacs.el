@@ -14,7 +14,5 @@
 (sjlwa/load-ide)
 (sjlwa/load-langs)
 (sjlwa/load-commands)
+(sjlwa/load-eshell)
 (sjlwa/load-bindings)
-
-(eshell-define-config)
-(esup-define-init)

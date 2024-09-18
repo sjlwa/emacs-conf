@@ -100,6 +100,10 @@
   (interactive)
   (sjlwa/load-file "commands"))
 
+(defun sjlwa/load-eshell ()
+  (interactive)
+  (sjlwa/load-file "eshell"))
+
 (defun sjlwa/load-bindings ()
   (interactive)
   (sjlwa/load-file "bindings"))
