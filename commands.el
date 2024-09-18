@@ -129,17 +129,21 @@
 
 (require 's)
 
+(defun sjlwa/resize-minibuffer-full-window ()
+  "Set window size of minibuffer to its max size"
+  (delete-other-windows)
+  (let ((minibuffer-window (minibuffer-window)))
+    (select-window minibuffer-window)
+    (window-resize minibuffer-window (frame-height))))
+
 (defun sjlwa/ps-kill ()
   "Search and kill process"
   (interactive)
 
-  (delete-other-windows)
-  (let ((minibuffer-window (minibuffer-window)))
-    (select-window minibuffer-window)
-    (window-resize minibuffer-window (frame-height)))
+  (sjlwa/resize-minibuffer-full-window)
 
   (with-temp-buffer
-    (call-process "ps" nil t nil "-aux")
+    (call-process "ps" nil t nil "-eo" "user,pid,args")
     (let* ((ps (completing-read "kill -9 ? " (s-split "\n" (buffer-string))))
            (ps-cols (split-string ps))
            (pid (nth 1 ps-cols))
