@@ -50,10 +50,6 @@
     (eshell)))
 
 
-(esup-define-init)
-
-
-
 
 
 ;; TODO: custom eshell prompt

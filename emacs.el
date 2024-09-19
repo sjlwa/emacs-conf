@@ -17,3 +17,6 @@
 (load-config-file "commands.el")
 (load-config-file "eshell.el")
 (load-config-file "bindings.el")
+
+(eshell-define-init)
+(esup-define-init)
