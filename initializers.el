@@ -41,25 +41,26 @@
   (add-hook 'prog-mode-hook 'hs-minor-mode)
   (put 'dired-find-alternate-file 'disabled nil)
   ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
-  (global-diff-hl-mode)
+  (global-diff-hl-mode) ;; (add-hook 'after-init-hook 'global-diff-hl-mode)
   (fset 'yes-or-no-p 'y-or-n-p))
 
-(defun interactivity-modes-set/configure-vars ()
+(defun set-default-general-directories ()
+  "Set directories for general tasks."
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
-      auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-saved-files/" t))
-      dired-kill-when-opening-new-dired-buffer t
-      vc-follow-symlinks t
-      tooltip-delay 0.1
-      eldoc-idle-delay 0
-      indent-tabs-mode nil
-      initial-major-mode 'fundamental-mode)
+        auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-saved-files/" t))
+        emacs-repo (file-name-directory (file-chase-links "~/.emacs"))))
+
+(defun interactivity-modes-set/configure-vars ()
+  (setq dired-kill-when-opening-new-dired-buffer t
+        vc-follow-symlinks t
+        tooltip-delay 0.1
+        eldoc-idle-delay 0
+        indent-tabs-mode nil
+        initial-major-mode 'fundamental-mode)
 
   (setq-default indent-tabs-mode nil
-              electric-indent-inhibit t
-              tab-width 4)
-
-  ;; (add-hook 'after-init-hook 'global-diff-hl-mode)
-  )
+                electric-indent-inhibit t
+                tab-width 4))
 
 (defun org-mode-define-config ()
   (with-eval-after-load 'org
@@ -77,33 +78,5 @@
   (show-init-scratch-message)
   (load-theme 'modus-vivendi))
 
-(defun sjlwa/load-file (filename)
-  (load (concat emacs-repo filename ".el")))
-
-(defun sjlwa/load-fuzzy ()
-  (interactive)
-  (sjlwa/load-file "fuzzy"))
-
-(defun sjlwa/load-packs ()
-  (interactive)
-  (sjlwa/load-file "packs"))
-
-(defun sjlwa/load-ide ()
-  (interactive)
-  (sjlwa/load-file "ide"))
-
-(defun sjlwa/load-langs ()
-  (interactive)
-  (sjlwa/load-file "langs"))
-
-(defun sjlwa/load-commands ()
-  (interactive)
-  (sjlwa/load-file "commands"))
-
-(defun sjlwa/load-eshell ()
-  (interactive)
-  (sjlwa/load-file "eshell"))
-
-(defun sjlwa/load-bindings ()
-  (interactive)
-  (sjlwa/load-file "bindings"))
+(defun load-config-file (filename)
+  (load (concat emacs-repo filename)))

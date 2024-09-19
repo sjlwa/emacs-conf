@@ -1,6 +1,7 @@
-(setq emacs-repo "~/dev/emacs-conf/")
-(load (concat emacs-repo "init-commands.el"))
+(setq emacs-repo (file-name-directory (file-chase-links "~/.emacs")))
+(load (concat emacs-repo "initializers.el"))
 (init-startup)
+(set-default-general-directories)
 
 (if window-system
     (sjlwa/window-system))
@@ -9,10 +10,10 @@
 (interactivity-modes-set/configure-vars)
 (org-mode-define-config)
 
-(sjlwa/load-fuzzy)
-(sjlwa/load-packs)
-(sjlwa/load-ide)
-(sjlwa/load-langs)
-(sjlwa/load-commands)
-(sjlwa/load-eshell)
-(sjlwa/load-bindings)
+(load-config-file "fuzzy.el")
+(load-config-file "packs.el")
+(load-config-file "ide.el")
+(load-config-file "langs.el")
+(load-config-file "commands.el")
+(load-config-file "eshell.el")
+(load-config-file "bindings.el")
