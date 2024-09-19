@@ -14,11 +14,12 @@
     (let* ((message (format "Emacs %s - Hi" emacs-version))
            (width (window-total-width))
            (height (window-total-height))
-           (padding-x (make-string (/ (- width (length message)) 2) ?\s))
-           (padding-y (make-string (/ (1- height) 2) ?\n)))
+           (padding-x (make-string (/ (- width (length message)) 5) ?\s))
+           (padding-y (make-string (/ (1- height) 4) ?\n)))
       (erase-buffer)
       (insert (concat padding-y padding-x message))
-      (put-text-property (point-min) (point-max) 'face '(:foreground "yellow")))))
+      (put-text-property (point-min) (point-max)
+                         'face '(:foreground "SpringGreen" :height 320)))))
 
 (defun set-default-window/frame-config ()
     "Sets the default frame (Use in case not loading from .Xresources)."
