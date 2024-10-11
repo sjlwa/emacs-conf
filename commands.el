@@ -39,12 +39,51 @@
              (while (looking-back "[ \n]")
                (backward-delete-char 1)))
     ;; otherwise, just do the normal kill word.
-    (backward-kill-word 1)))
+    (xahlee/backward-delete-word 1)))
+
+(defun xahlee/delete-word (arg)
+  "Delete characters forward until encountering the end of a word.
+With argument, do this that many times.
+This command does not push text to `kill-ring'."
+  (interactive "p")
+  (delete-region
+   (point)
+   (progn
+     (forward-word arg)
+     (point))))
+
+(defun xahlee/backward-delete-word (arg)
+  "Delete characters backward until encountering the beginning of a word.
+With argument, do this that many times.
+This command does not push text to `kill-ring'."
+  (interactive "p")
+  (xahlee/delete-word (- arg)))
+
+(defun xahlee/delete-line ()
+  "Delete text from current position to end of line char.
+This command does not push text to `kill-ring'."
+  (interactive)
+  (delete-region
+   (point)
+   (progn (end-of-line 1) (point)))
+  (delete-char 1))
+
+(defun xahlee/delete-line-backward ()
+  "Delete text between the beginning of the line to the cursor position.
+This command does not push text to `kill-ring'."
+  (interactive)
+  (let (p1 p2)
+    (setq p1 (point))
+    (beginning-of-line 1)
+    (setq p2 (point))
+    (delete-region p1 p2)))
 
 (defun sjlwa/ctrl_w ()
   (interactive)
   (if (eq major-mode 'eshell-mode)
-      (backward-kill-word 1)
+      (progn ((push-mark)
+              (backward-word)
+              (delete-region (point) (mark))))
     (kill-buffer)))
 
 (defun sjlwa/esc-esc-esc () (interactive)
