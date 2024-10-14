@@ -12,7 +12,9 @@
 (defun lsp-mode-init-config ()
   (setq lsp-apply-edits-after-file-operations nil
         lsp-enable-file-watchers nil
-        lsp-diagnostics-flycheck-default-level 'info))
+        lsp-diagnostics-flycheck-default-level 'info
+        lsp-ui-sideline-diagnostic-max-line-length 150
+        lsp-ui-sideline-diagnostic-max-lines 3))
 
 
 (add-hook 'company-mode-hook 'company-init-config)
