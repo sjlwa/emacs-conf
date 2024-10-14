@@ -22,12 +22,23 @@
         (kill-buffer (current-buffer))
         (tab-close))))
 
+(defun history ()
+  (interactive)
+  (eshell-list-history)
+  nil)
+
 (defun eshell-init-setup ()
   (company-mode -1)
-  (setq eshell-visual-commands (append eshell-visual-commands '("git" "dotnet" "ps"))
-        eshell-hist-ignoredups t)
   (setq esh-autosuggest-use-company-map t)
-  (esh-autosuggest-mode))
+  (esh-autosuggest-mode)
+  (eshell-syntax-highlighting-global-mode)
+  (setq eshell-hist-ignoredups t
+        eshell-visual-commands (append eshell-visual-commands
+                                       '("git"
+                                         "dotnet"
+                                         "ps"
+                                         "docker"
+                                         "history"))))
 
 (defun eshell-define-init ()
   ;;(setq eshell-prompt-function 'sjlwa-eshell-prompt)
