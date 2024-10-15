@@ -78,13 +78,11 @@ This command does not push text to `kill-ring'."
     (setq p2 (point))
     (delete-region p1 p2)))
 
-(defun sjlwa/ctrl_w ()
+(defun sjlwa/kill-buffer-tab ()
+  "Kills the current buffer and tab."
   (interactive)
-  (if (eq major-mode 'eshell-mode)
-      (progn ((push-mark)
-              (backward-word)
-              (delete-region (point) (mark))))
-    (kill-buffer)))
+  (kill-buffer (current-buffer))
+  (tab-close))
 
 (defun sjlwa/esc-esc-esc () (interactive)
   (if (minibufferp) (keyboard-escape-quit)))

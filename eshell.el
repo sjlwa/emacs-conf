@@ -5,22 +5,10 @@
 
 (defun sjlwa/open-eshell-tab-new ()
   "Directly open a new tab with eshell mode enabled"
+  (interactive)
   (tab-bar-new-tab)
   (let ((current-prefix-arg '(4)))
          (call-interactively 'eshell)))
-
-(defun sjlwa/tab-new ()
-  "Open eshell tab if current buffer is eshell"
-  (interactive)
-  (if (eq major-mode 'eshell-mode)
-      (sjlwa/open-eshell-tab-new)))
-
-(defun sjlwa/eshell-tab-exit-close ()
-  (interactive)
-  (if (eq major-mode 'eshell-mode)
-      (progn
-        (kill-buffer (current-buffer))
-        (tab-close))))
 
 (defun history ()
   (interactive)
@@ -28,6 +16,7 @@
   nil)
 
 (defun eshell-init-setup ()
+  (eshell-load-bindings)
   (company-mode -1)
   (setq esh-autosuggest-use-company-map t)
   (esh-autosuggest-mode)

@@ -4,7 +4,7 @@
 (setq
  key-maps-list
  '(
-   ("C-w" . sjlwa/ctrl_w)
+   ("C-w" . kill-current-buffer)
    ("C-z"   . undo-only)
    ("C-S-z" . undo-redo)
    ("C-p" . sjlwa/find-file)
@@ -32,7 +32,6 @@
    ("M-d" . xahlee/delete-word)
    ("<M-backspace>" . xahlee/backward-delete-word)
    ("C-<backspace>" . ryanmarcus/backward-kill-word)
-   ("C-S-t" . sjlwa/tab-new)
    ("M-0" . (lambda () (interactive) (sjlwa/select-tab-by-number 0)))
    ("M-1" . (lambda () (interactive) (sjlwa/select-tab-by-number 1)))
    ("M-2" . (lambda () (interactive) (sjlwa/select-tab-by-number 2)))
@@ -43,7 +42,6 @@
    ("M-7" . (lambda () (interactive) (sjlwa/select-tab-by-number 7)))
    ("M-8" . (lambda () (interactive) (sjlwa/select-tab-by-number 8)))
    ("M-9" . (lambda () (interactive) (sjlwa/select-tab-by-number 9)))
-   ("C-d" . sjlwa/eshell-tab-exit-close)
    ("ESC ESC ESC" . sjlwa/esc-esc-esc)))
 
 (mapc (lambda (pair)
@@ -51,3 +49,9 @@
       key-maps-list)
 
 (define-key icomplete-minibuffer-map (kbd "TAB") #'my-icomplete-force-complete)
+
+(defun eshell-load-bindings ()
+  (define-key eshell-mode-map (kbd "C-w") 'ryanmarcus/backward-kill-word)
+  (define-key eshell-mode-map (kbd "C-d") 'sjlwa/kill-buffer-tab)
+  (define-key eshell-mode-map (kbd "C-S-t") 'sjlwa/open-eshell-tab-new)
+  nil)
