@@ -42,14 +42,14 @@
      (string-prefix-p "*eshell*" (buffer-name buf)))
    (buffer-list)))
 
-(defun eshell-init-from-desktop ()
+(defun eshell-init-after-server ()
   (fringe-mode 0)
   (load-theme 'wheatgrass)
   (if (eshell-is-running)
       (sjlwa/open-eshell-tab-new)
     (eshell)))
 
-
+(add-hook 'server-after-make-frame-hook 'eshell-init-after-server)
 
 
 ;; TODO: custom eshell prompt
