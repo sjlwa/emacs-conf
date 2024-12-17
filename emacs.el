@@ -1,22 +1,28 @@
-(setq emacs-repo (file-name-directory (file-chase-links "~/.emacs")))
-(load (concat emacs-repo "initializers.el"))
+(setq inhibit-messages t)
+(load "~/dev/emacs-conf/icommands.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/initializers.el" nil inhibit-messages)
+
 (init-startup)
-(set-default-general-directories)
 
-(if window-system
-    (sjlwa/window-system))
+(if (display-graphic-p)
+    (init-window-system)
+  (init-terminal-system))
 
-(interactivity-modes-enable/configure)
-(interactivity-modes-set/configure-vars)
+(load "~/dev/emacs-conf/fuzzy.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/packs.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/ide.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/langs.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/commands.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/eshell.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/bindings.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/dired.el" nil inhibit-messages)
+
+(fuzzy-mode)
+(keymap-global-load)
 (org-mode-define-config)
-
-(load-config-file "fuzzy.el")
-(load-config-file "packs.el")
-(load-config-file "ide.el")
-(load-config-file "langs.el")
-(load-config-file "commands.el")
-(load-config-file "eshell.el")
-(load-config-file "bindings.el")
-
+(markdown-mode-set-config)
 (eshell-define-init)
 (esup-define-init)
+(dired-configure)
+
+(setq auth-source-save-behavior nil)

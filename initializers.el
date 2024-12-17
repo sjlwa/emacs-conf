@@ -1,3 +1,37 @@
+(defun set-default-general-directories ()
+  "Set directories for general tasks."
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
+        auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-saved-files/" t))))
+
+(defun interactivity-modes-enable/configure ()
+  "Enable the modes required for a pleasant interactivity."
+  (cua-mode 1)
+  (xterm-mouse-mode 1)
+  (column-number-mode t)
+  (delete-selection-mode +1)
+  (global-goto-address-mode +1)
+  (electric-pair-mode t)
+  (add-hook 'prog-mode-hook 'hs-minor-mode)
+  (menu-bar-mode -1)
+  ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
+  (add-hook 'after-init-hook 'global-diff-hl-mode)
+  (fset 'yes-or-no-p 'y-or-n-p))
+
+(defun interactivity-modes-set/configure-vars ()
+  (setq vc-follow-symlinks t
+        tooltip-delay 0.1
+        eldoc-idle-delay 0
+        indent-tabs-mode nil
+        initial-major-mode 'fundamental-mode)
+
+  (setq-default indent-tabs-mode nil
+                electric-indent-inhibit t
+                tab-width 4)
+
+  (add-to-list 'same-window-buffer-names "*compilation*")
+  
+  (msg "interactivity-modes-set/configure-vars: Done"))
+
 (defun init-startup ()
   "temporarily increase `gc-cons-hold' when loading to speed up startup."
   (setq gc-cons-threshold most-positive-fixnum
@@ -6,7 +40,12 @@
         warning-minimum-level :emergency
         package-enable-at-startup nil)
 
-  (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000))))
+  (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000)))
+
+  (set-default-general-directories)
+  (interactivity-modes-enable/configure)
+  (interactivity-modes-set/configure-vars)
+  (msg "[init]"))
 
 (defun show-init-scratch-message ()
   "Insert initial scratch message directly"
@@ -14,12 +53,12 @@
     (let* ((message (format "Emacs %s - Hi" emacs-version))
            (width (window-total-width))
            (height (window-total-height))
-           (padding-x (make-string (/ (- width (length message)) 5) ?\s))
-           (padding-y (make-string (/ (1- height) 4) ?\n)))
+           (padding-x (make-string (/ (- width (length message))) ?\s))
+           (padding-y (make-string (/ (1- height)) ?\n)))
       (erase-buffer)
       (insert (concat padding-y padding-x message))
       (put-text-property (point-min) (point-max)
-                         'face '(:foreground "SpringGreen" :height 320)))))
+                         'face '(:foreground "Magenta")))))
 
 (defun set-default-window/frame-config ()
     "Sets the default frame (Use in case not loading from .Xresources)."
@@ -31,43 +70,18 @@
 			(vertical-scroll-bars . nil)))
     (blink-cursor-mode -1))
 
-(defun interactivity-modes-enable/configure ()
-  "Enable the modes required for a pleasant interactivity."
-  (cua-mode 1)
-  (xterm-mouse-mode 1)
-  (column-number-mode t)
-  (delete-selection-mode +1)
-  (global-goto-address-mode +1)
-  (electric-pair-mode t)
-  (add-hook 'prog-mode-hook 'hs-minor-mode)
-  (put 'dired-find-alternate-file 'disabled nil)
-  ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
-  (global-diff-hl-mode) ;; (add-hook 'after-init-hook 'global-diff-hl-mode)
-  (fset 'yes-or-no-p 'y-or-n-p))
-
-(defun set-default-general-directories ()
-  "Set directories for general tasks."
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
-        auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-saved-files/" t))
-        emacs-repo (file-name-directory (file-chase-links "~/.emacs"))))
-
-(defun interactivity-modes-set/configure-vars ()
-  (setq dired-kill-when-opening-new-dired-buffer t
-        vc-follow-symlinks t
-        tooltip-delay 0.1
-        eldoc-idle-delay 0
-        indent-tabs-mode nil
-        initial-major-mode 'fundamental-mode)
-
-  (setq-default indent-tabs-mode nil
-                electric-indent-inhibit t
-                tab-width 4))
+(defun org-mode-define-tasks-status ()
+  (setq org-todo-keywords '((sequence "TODO" "DOING" "|" "DONE")))
+  (setq org-todo-keyword-faces
+      '(("TODO" . org-todo)
+        ("DOING" . org-drawer)
+        ("DONE" . org-done))))
 
 (defun org-mode-define-config ()
   (with-eval-after-load 'org
     (setq org-support-shift-select t
           org-startup-indented t)
-    (set-org-mode-tasks-status)
+    (org-mode-define-tasks-status)
     (add-hook 'org-mode-hook #'visual-line-mode)))
 
 (defun esup-define-init ()
@@ -75,9 +89,36 @@
     (setq esup-user-init-file (file-truename "~/.emacs"))
     (setq esup-depth 0)))
 
-(defun sjlwa/window-system ()
+(defun init-window-system ()
   (show-init-scratch-message)
-  (load-theme 'modus-vivendi))
+  (load-theme 'manoj-dark t))
 
-(defun load-config-file (filename)
-  (load (concat emacs-repo filename)))
+(defun init-terminal-clipboard ()
+  (require 'clipetty)
+  (require 'xclip)
+  (global-clipetty-mode)
+  (xclip-mode)
+  (normal-erase-is-backspace-mode 0)
+  (diff-hl-margin-mode 1))
+
+(defun init-terminal-system ()
+  (load-theme 'hc-zenburn t nil)
+  (set-face-attribute 'default nil :background "#111")
+  (add-hook 'after-init-hook #'init-terminal-clipboard)
+  (msg "init-terminal-system done!"))
+
+(defun markdown-mode-set-config ()
+  (setq markdown-ts-url "https://github.com/tree-sitter-grammars/tree-sitter-markdown")
+  (append
+   treesit-language-source-alist
+   '(markdown markdown-ts-url "split_parser" "tree-sitter-markdown/src")
+   '(markdown-inline markdown-ts-url "split_parser" "tree-sitter-markdown-inline/src"))
+
+  ;; (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-ts-mode))
+  ;;  (setq markdown-fontify-code-blocks-natively t)
+
+  (add-hook 'markdown-mode-hook
+   '(lambda ()
+      (set-face-attribute'markdown-pre-face nil :family "IosevkaExtraLight")
+      ))
+  )

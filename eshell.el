@@ -6,9 +6,9 @@
 (defun sjlwa/open-eshell-tab-new ()
   "Directly open a new tab with eshell mode enabled"
   (interactive)
-  (tab-bar-new-tab)
-  (let ((current-prefix-arg '(4)))
-         (call-interactively 'eshell)))
+  (let ((default-directory "~"))
+    (tab-bar-new-tab)
+    (eshell t)))
 
 (defun history ()
   (interactive)
@@ -16,17 +16,16 @@
   nil)
 
 (defun eshell-init-setup ()
-  (eshell-load-bindings)
+  (keymap-eshell-load)
   (company-mode -1)
-  (setq esh-autosuggest-use-company-map t)
+  ;; (setq esh-autosuggest-use-company-map t)
   (esh-autosuggest-mode)
   (eshell-syntax-highlighting-global-mode)
   (setq eshell-hist-ignoredups t
+        eshell-scroll-to-bottom-on-input t
         eshell-visual-commands (append eshell-visual-commands
                                        '("git"
-                                         "dotnet"
                                          "ps"
-                                         "docker"
                                          "history"))))
 
 (defun eshell-define-init ()
@@ -44,28 +43,30 @@
 
 (defun eshell-init-after-server ()
   (fringe-mode 0)
-  (load-theme 'wheatgrass)
-  (if (eshell-is-running)
-      (sjlwa/open-eshell-tab-new)
-    (eshell)))
+  (load-theme 'modus-vivendi t nil)
+  ;;(load-theme 'ef-trio-dark t nil)
+  ;; (if (eshell-is-running)
+  ;;     (sjlwa/open-eshell-tab-new)
+  ;;   (eshell))
+  (eshell))
 
-(add-hook 'server-after-make-frame-hook 'eshell-init-after-server)
+(defun eshell-init-after-server-check ()
+  (if (daemonp)
+      (eshell-init-after-server)))
 
+(add-hook 'server-after-make-frame-hook 'eshell-init-after-server-check)
 
-;; TODO: custom eshell prompt
-;; (defun sjlwa-eshell-prompt ()
-;;   (concat
-;;    (with-face (abbreviate-file-name (eshell/pwd))
-;;               :background color-prompt-pwd-bg :foreground color-prompt-pwd-fg)
+(defun sjlwa-eshell-propmt-symbol ()
+  (if (= (user-uid) 0) "#" "$"))
 
-;;    " "
-;;    (with-face (let ((branch (current-git-branch)))
-;;                 (if (string= branch "")
-;;                     ""
-;;                   (concat branch " ")))
-;;               :foreground color-prompt-branch)
+(defun sjlwa-eshell-prompt ()
+  (with-face
+   (concat
+    (abbreviate-file-name (eshell/pwd))
+    " "
+    (sjlwa-eshell-propmt-symbol)
+    " ")
+   :foreground "thistle"
+   :weight "ultra-bold"))
 
-;;      (if (= (user-uid) 0)
-;;          (with-face "#" :background "black" :foreground "#e42")
-;;        (with-face "$" :foreground color-prompt-shebang))
-;;      " "))
+;; (setq eshell-prompt-function 'sjlwa-eshell-prompt)
