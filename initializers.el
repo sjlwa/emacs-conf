@@ -1,9 +1,24 @@
-(defun set-default-general-directories ()
-  "Set directories for general tasks."
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
-        auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-saved-files/" t))))
+(defun init-config ()
+  (setq inhibit-startup-screen t
+        inhibit-startup-message t
+        inhibit-compacting-font-caches t
+        file-name-handler-alist nil
+        warning-minimum-level :emergency
+        package-enable-at-startup nil
+        vc-follow-symlinks t
+        tooltip-delay 0.1
+        eldoc-idle-delay 0
+        indent-tabs-mode nil
+        initial-major-mode 'fundamental-mode
+        auth-source-save-behavior nil
+        backup-directory-alist '(("." . "~/.emacs.d/backups"))
+        auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-saved-files/" t)))
 
-(defun interactivity-modes-enable/configure ()
+  (setq-default indent-tabs-mode nil
+                electric-indent-inhibit t
+                tab-width 4))
+
+(defun interactivity-mode ()
   "Enable the modes required for a pleasant interactivity."
   (cua-mode 1)
   (xterm-mouse-mode 1)
@@ -13,39 +28,11 @@
   (electric-pair-mode t)
   (add-hook 'prog-mode-hook 'hs-minor-mode)
   (menu-bar-mode -1)
-  ;;(pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
-  (add-hook 'after-init-hook 'global-diff-hl-mode)
-  (fset 'yes-or-no-p 'y-or-n-p))
-
-(defun interactivity-modes-set/configure-vars ()
-  (setq vc-follow-symlinks t
-        tooltip-delay 0.1
-        eldoc-idle-delay 0
-        indent-tabs-mode nil
-        initial-major-mode 'fundamental-mode)
-
-  (setq-default indent-tabs-mode nil
-                electric-indent-inhibit t
-                tab-width 4)
-
+  (fset 'yes-or-no-p 'y-or-n-p)
   (add-to-list 'same-window-buffer-names "*compilation*")
-  
-  (msg "interactivity-modes-set/configure-vars: Done"))
-
-(defun init-startup ()
-  "temporarily increase `gc-cons-hold' when loading to speed up startup."
-  (setq gc-cons-threshold most-positive-fixnum
-        file-name-handler-alist nil ;; Avoid analyzing files when loading remote files.
-        inhibit-startup-screen t
-        warning-minimum-level :emergency
-        package-enable-at-startup nil)
-
-  (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000)))
-
-  (set-default-general-directories)
-  (interactivity-modes-enable/configure)
-  (interactivity-modes-set/configure-vars)
-  (msg "[init]"))
+  ;; (pixel-scroll-precision-mode 1) ;; Doesn't work when lsp-mode is active
+  (with-eval-after-load 'diff-hl
+    (add-hook 'after-init-hook 'global-diff-hl-mode)))
 
 (defun show-init-scratch-message ()
   "Insert initial scratch message directly"
@@ -118,7 +105,5 @@
   ;;  (setq markdown-fontify-code-blocks-natively t)
 
   (add-hook 'markdown-mode-hook
-   '(lambda ()
-      (set-face-attribute'markdown-pre-face nil :family "IosevkaExtraLight")
-      ))
-  )
+            #'(lambda ()
+                (set-face-attribute'markdown-pre-face nil :family "IosevkaExtraLight"))))
