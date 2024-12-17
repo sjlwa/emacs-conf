@@ -1,41 +1,53 @@
+(defun get-packages-essentials ()
+  '((ag . t)
+    (clipetty . t)
+    (xclip . t)
+    (diff-hl . t)
+    (esup . t)
+    (expand-region . t)
+    (http . t)
+    (magit . t)
+    (move-text . t)
+    (multiple-cursors . t)
+    (projectile . t)
+    (rainbow-delimiters . t)
+    (auto-sudoedit-mode . t)
+    ))
+
+(defun get-packages-languages ()
+  '((csproj-mode . t)
+    (dart-mode . nil)
+    (lsp-java . t)
+    (lsp-pyright . nil)
+    (js2-mode . t)
+    (omnisharp . t)
+    (web-mode . t)))
+
+(defun get-packages-ide ()
+  '((company . t)
+    (company-quickhelp . t)
+    (editorconfig . t)
+    (ellama . nil)
+    (emmet-mode . t)
+    (esh-autosuggest . nil)
+    (flycheck . t)
+    (format-all . nil)
+    (grip-mode . t)
+    (llm-ollama . nil)
+    (lsp-mode . t)
+    (lsp-sonarlint . t)
+    (lsp-ui . t)
+    (skewer-mode . nil)
+    (tree-sitter . t)
+    (tree-sitter-langs . t)
+    (yasnippet . t)))
+
 (setq package-selected-packages
-      '(;; essentials
-        ag
-        diff-hl
-        esup
-        expand-region
-        http
-        magit
-        move-text
-        multiple-cursors
-        projectile
-	    rainbow-delimiters
-
-        ;; languages
-        ;; dart-mode
-        ;; lsp-java
-        ;; lsp-pyright
-        js2-mode
-        web-mode
-
-	    ;; ide
-	    company
-        company-quickhelp
-        editorconfig
-        ellama
-        emmet-mode
-        esh-autosuggest
-        flycheck
-        ;; format-all
-        ;; llm-ollama
-        lsp-mode
-        lsp-ui
-        ;; skewer-mode
-        tree-sitter
-        tree-sitter-langs
-        yasnippet
-
-	))
+      (extract-true-keys
+       (merge-alists-simple
+        (get-packages-essentials)
+        (get-packages-languages)
+        (get-packages-ide))))
 
 (defun sjlwa-packages-source ()
   "Load the packages archives"
