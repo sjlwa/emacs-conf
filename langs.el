@@ -21,38 +21,11 @@
         (rust "https://github.com/tree-sitter/tree-sitter-rust")
         (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-
+(load "~/dev/emacs-conf/dotnet.el" nil inhibit-messages)
 
 (defun load-lang--c ()
   (add-to-list 'auto-mode-alist '("\\.c\\'" . c-ts-mode))
   (add-hook 'c-ts-mode-hook 'eglot-ensure))
-
-
-
-(defun load-lang--csharp ()
-  "Loads the required configuration for csharp mode"
-  (add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-mode))
-  (if (bound-and-true-p company-mode)
-      (add-to-list 'company-backends 'company-omnisharp))
-  
-  (defun csharp-init-modes ()
-    (flycheck-mode)
-    (omnisharp-mode)
-    (lsp-deferred))
-
-  (defun csharp-init-config ()
-    ;; (load-file "~/dev/sharper/sharper.el")
-    (c-set-style "ellemtel")
-    (setq indent-tabs-mode nil
-          c-syntactic-indentation t
-          c-basic-offset 4
-          truncate-lines t
-          tab-width 4
-          evil-shift-width 4))
-
-  (add-hook 'csharp-mode-hook 'csharp-init-modes)
-  (add-hook 'csharp-mode-hook 'csharp-init-config))
-
 
 
 (defun load-lang--dart ()

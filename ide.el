@@ -24,24 +24,15 @@
 
 (add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-ts-mode))
 
-;; (use-package lsp-sonarlint
-;;   :config
-;;   (add-to-list 'lsp-sonarlint-modes-enabled 'csharp-mode)
-;;   (add-to-list 'lsp-sonarlint-modes-enabled 'csharp-ts-mode)
-
-;;   :custom
-;;   ;; Allow sonarlint to download and unzip the official VSCode extension
-;;   ;; If nil, you'll have to do that yourself. See also `lsp-sonarlint-download'
-;;   ;; `lsp-sonarlint-download-url' and `lsp-sonarlint-download-dir'
-;; ;;  (lsp-sonarlint-use-system-jre t)
-;;   (lsp-sonarlint-download-url "https://github.com/SonarSource/sonarlint-vscode/releases/download/4.7.0%2B76532/sonarlint-vscode-linux-x64-4.7.0.vsix")
-
-;;   ;; choose which analyzers you want enabled. By default all are enabled
-;;   ;; See command `lsp-sonarlint-available-analyzers' for the full list.
-;;   ;;(lsp-sonarlint-enabled-analyzers '("java" "cfamily" "python" "text")))
-;;   (lsp-sonarlint-enabled-analyzers '("omnisharp")))
 
 
+(with-eval-after-load 'lsp-sonarlint
+  (setq lsp-sonarlint-download-url
+        (concat
+         "https://github.com/SonarSource/sonarlint-vscode/releases/download/"
+         "4.12.0%2B76892/sonarlint-vscode-linux-x64-4.12.0.vsix"))
+  ;; (setq lsp-sonarlint-enabled-analyzers '(omnisharp cfamily))
+  (add-to-list 'lsp-sonarlint-modes-enabled '(csharp)))
 
 
 ;; (add-to-list 'eglot-server-programs
