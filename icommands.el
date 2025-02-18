@@ -55,3 +55,7 @@
                   (when (eq (cdr pair) t)
                     (car pair)))
                 alist)))
+
+(defun eshell-call-command-as-compilation (command args)
+  "Run COMMAND with ARGS as a compilation process."
+  (compile (concat command " " (string-join args " "))))

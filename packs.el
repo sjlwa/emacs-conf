@@ -20,7 +20,7 @@
     (lsp-java . t)
     (lsp-pyright . nil)
     (js2-mode . t)
-    (omnisharp . t)
+    (omnisharp . nil)
     (web-mode . t)))
 
 (defun get-packages-ide ()

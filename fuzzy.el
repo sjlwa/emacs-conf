@@ -6,6 +6,8 @@
 					   "*Async-native-compile-log*"
                        "*Buffer List*"
                        (seq "*codeium" (+ anything))
+                       (seq "csharp-roslyn")
+                       (seq (+ anything) "csharp-roslyn" (+ anything))
                        "*clang-error*"
                        "*clang-output*"
                        (seq "*clangd" (+ anything))

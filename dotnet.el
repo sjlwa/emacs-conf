@@ -1,15 +1,31 @@
 (defun eshell/dotnet (&rest args)
+  "A custom Eshell function for running 'dotnet' commands as a compilation."
   (interactive)
-  (compile (concat "dotnet " (string-join args " "))))
+  (eshell-call-command-as-compilation "dotnet" args))
+
+(defun dap-netcore-enable ()
+  (require 'dap-netcore)
+  (require 'dap-utils)
+  (setq dap-print-io t)
+  (setq dap-netcore-install-dir "~/.emacs.d/.cache/")
+  (setq dap-netcore-download-url
+        "https://github.com/Samsung/netcoredbg/releases/download/3.1.2-1054/netcoredbg-linux-amd64.tar.gz")
+  (dap-auto-configure-mode))
+
+(defun lsp-csharp-roslyn-enable ()
+  (require 'lsp-mode)
+  (setq lsp-disabled-clients '(csharp-ls omnisharp))
+  (setq lsp-client-packages (remove 'lsp-csharp lsp-client-packages))
+  (setq lsp-csharp-server-args
+        (list "--languageserver" "--hostPID" (format "%d" (emacs-pid))))
+  (lsp))
 
 (defun csharp-init-modes ()
   (flycheck-mode)
-  (omnisharp-mode)
-  (eglot-ensure)
-  (breadcrumb-mode))
+  (lsp-csharp-roslyn-enable)
+  (dap-netcore-enable))
 
-(defun csharp-init-config ()
-  ;; (load-file "~/dev/sharper/sharper.el")
+(defun csharp-set-config ()
   (c-set-style "ellemtel")
   (setq indent-tabs-mode nil
         c-syntactic-indentation t
@@ -20,19 +36,6 @@
 
 (defun load-lang--csharp ()
   "Loads the required configuration for csharp mode"
-  (add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-mode))
-
-  (if (bound-and-true-p company-mode)
-      (add-to-list 'company-backends 'company-omnisharp))
-
-  (setq lsp-sonarlint-omnisharp-repository-url
-        "https://github.com/SonarSource/sonarlint-omnisharp")
-  (setq lsp-sonarlint-omnisharp-enabled t)
-
-  (setq omnisharp-expected-server-version "1.39.12")
-  (setq lsp-csharp-server-args
-          (list "--languageserver" "--hostPID" (format "%d" (emacs-pid))))
-
+  (add-hook 'csharp-mode-hook 'csharp-set-config)
   (add-hook 'csharp-mode-hook 'csharp-init-modes)
-  (add-hook 'csharp-mode-hook 'csharp-init-config)
   (msg "Mode config loaded: chsarp-mode"))
