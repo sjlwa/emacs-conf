@@ -6,16 +6,6 @@
     (when (= 0 (call-process "git" nil t nil "branch" "--show-current"))
       (string-trim (buffer-string)))))
 
-(defun isrepo ()
-  "Check whether current directory is a git repository"
-  (zerop
-   (call-process
-    "git" nil nil nil
-    "-C"
-    default-directory
-    "rev-parse"
-    "--is-inside-work-tree")))
-
 (defun with-face (str &rest face-plist)
   (propertize str 'face face-plist))
 

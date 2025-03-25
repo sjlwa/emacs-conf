@@ -1,6 +1,6 @@
 (defun sjlwa/find-file ()
   (interactive)
-  (if (isrepo)
+  (if (not (eq (vc-root-dir) nil))
       (call-interactively 'projectile-find-file)
     (call-interactively 'ido-find-file)))
 
