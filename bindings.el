@@ -90,7 +90,3 @@
 
 (with-eval-after-load 'prog-mode
   (define-key prog-mode-map (kbd "S-SPC") 'lsp-execute-code-action))
-
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "M-h") #'company-show-doc-buffer)
-  (define-key company-active-map (kbd "C-h") #'ryanmarcus/backward-kill-word))
