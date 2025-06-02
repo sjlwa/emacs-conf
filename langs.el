@@ -24,6 +24,7 @@
 (load "~/dev/emacs-conf/dotnet.el" nil inhibit-messages)
 
 (defun load-lang--c ()
+  (bye-buffers-add-patterns-inbetween hidden-buffers '("clang-error" "clang-output" "clangd"))
   (add-to-list 'auto-mode-alist '("\\.c\\'" . c-ts-mode))
   (add-hook 'c-ts-mode-hook 'eglot-ensure))
 
@@ -31,7 +32,7 @@
 (defun load-lang--dart ()
   "Loads the required config for dart"
   (add-hook 'dart-mode-hook 'lsp-deferred)
-
+  (bye-buffers-add-patterns-inbetween hidden-buffers '("dart_analysis" "LSP Dart"))
   (defun dart-init-config ()
     (setq flutter-sdk-path "~/snap/flutter/common/flutter/")
     (setq lsp-dart-sdk-dir (concat flutter-sdk-path "bin/cache/dart-sdk")
@@ -43,6 +44,7 @@
 
 (defun load-lang--golang ()
   "Loads the required config for golang"
+  (bye-buffers-add-patterns-inbetween hidden-buffers '("gopls"))
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.mod\\'" . go-mod-ts-mode))
 
@@ -54,6 +56,11 @@
 (defun load-lang--java ()
   "Loads the required config for java"
   (add-to-list 'auto-mode-alist '("\\.java\\'" . java-ts-mode))
+  (setq lsp-java-java-path "/usr/lib/jvm/java-17-openjdk/bin/java")
+
+  (bye-buffers-add-patterns-inbetween hidden-buffers '("*jdtls"))
+
+  (bye-buffers-add-patterns-inbetween hidden-buffers "*jdtls")
 
   (add-hook 'java-ts-mode 'lsp-deferred)
   (eval-after-load 'java-ts-mode '(yas-global-mode)))
@@ -62,6 +69,8 @@
 
 (defun load-lang--javascript ()
   "Loads the required config for javascript"
+  (bye-buffers-add-patterns-inbetween hidden-buffers '("*jsts"))
+
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
 
@@ -69,11 +78,23 @@
   (add-hook 'js2-mode-hook 'lsp-deferred))
 
 
+(defun language-configure-astro ()
+  (bye-buffers-add-patterns-inbetween hidden-buffers "astro-ls")
+  
+  (add-to-list 'auto-mode-alist '("\\.astro\\'" . astro-ts-mode))
+  (add-hook 'astro-ts-mode-hook
+            '(lambda ()
+               (setq lsp-disabled-clients '(eslint))
+               (lsp))))
+
+(language-configure-astro)
 
 (defun load-lang--php ()
   "Loads the required config for php"
   (defun php-init () (web-mode) (lsp))
-  (add-to-list 'auto-mode-alist '("\\.php?\\'" . php-init)))
+  (add-to-list 'auto-mode-alist '("\\.php?\\'" . php-init))
+  (bye-buffers-add-patterns-inbetween hidden-buffers "*iph")
+  )
 
 
 
@@ -82,6 +103,8 @@
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
 
   (add-hook 'python-ts-mode-hook 'lsp-deferred)
+
+  (bye-buffers-add-patterns-inbetween hidden-buffers '("pylsp" "pyright"))
 
   (eval-after-load 'python-ts-mode
     '(setq lsp-pyright-typechecking-mode "strict")))
@@ -92,20 +115,29 @@
   "Loads the required config for rust"
   ;; (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
   ;; (add-hook 'rust-ts-mode 'lsp-deferred)
-  (add-hook 'rust-mode 'lsp-deferred))
+  ;;(add-hook 'rust-mode 'lsp)
+  )
 
 
 
 (defun load-lang--typescript ()
   "Loads the required config for typescript mode"
+  (bye-buffers-add-patterns-inbetween hidden-buffers '("ts-ls"))
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-
-  (add-hook 'typescript-ts-mode-hook 'lsp-deferred))
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . tsx-ts-mode))
+  (add-hook 'typescript-ts-mode-hook 'lsp)
+  (add-hook 'tsx-ts-mode-hook 'lsp)
+  (add-hook 'tsx-ts-mode-hook
+          (lambda ()
+            (setq-local comment-start "{/* ")
+            (setq-local comment-end   " */}"))))
 
 
 
 (defun load-lang--web ()
   "Loads the required config for web mode"
+  (bye-buffers-add-patterns-inbetween hidden-buffers '("*css" "*html" "*eslint"))
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
   (defun web-mode-init-config ()

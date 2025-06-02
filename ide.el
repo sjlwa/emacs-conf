@@ -24,23 +24,33 @@
         lsp-completion-show-detail nil
         lsp-auto-guess-root t))
 
+(bye-buffers-add-patterns-inbetween hidden-buffers
+                                    '("*lsp-" "*sonarlint" "*codeium"))
 
-(add-hook 'company-mode-hook 'company-init-config)
 (add-hook 'lsp-mode-hook 'lsp-mode-init-config)
 (eval-after-load 'yasnippet '(yas-global-mode))
 (eval-after-load 'editorconfig '(editorconfig-mode 1))
 
 (add-to-list 'auto-mode-alist '("\\.yml?\\'" . yaml-ts-mode))
 
+(add-to-list 'auto-mode-alist '("\\.http?\\'" . http-mode))
 
 
-(with-eval-after-load 'lsp-sonarlint
-  (setq lsp-sonarlint-download-url
-        (concat
-         "https://github.com/SonarSource/sonarlint-vscode/releases/download/"
-         "4.12.0%2B76892/sonarlint-vscode-linux-x64-4.12.0.vsix"))
-  ;; (setq lsp-sonarlint-enabled-analyzers '(omnisharp cfamily))
-  (add-to-list 'lsp-sonarlint-modes-enabled '(csharp)))
+(setq grip-binary-path "/usr/bin/grip")
+;; (add-hook 'markdown-mode-hook #'grip-mode)
+;; (add-hook 'org-mode-hook #'grip-mode)
+(setq grip-url-browser "firefox")
+(setq grip-update-after-change nil)
+
+
+
+;; (with-eval-after-load 'lsp-sonarlint
+;;   (setq lsp-sonarlint-download-url
+;;         (concat
+;;          "https://github.com/SonarSource/sonarlint-vscode/releases/download/"
+;;          "4.12.0%2B76892/sonarlint-vscode-linux-x64-4.12.0.vsix"))
+;;   ;; (setq lsp-sonarlint-enabled-analyzers '(omnisharp cfamily))
+;;   (add-to-list 'lsp-sonarlint-modes-enabled csharp)) csharp-roslyn solves it
 
 
 ;; (add-to-list 'eglot-server-programs

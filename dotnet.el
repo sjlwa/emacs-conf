@@ -38,4 +38,8 @@
   "Loads the required configuration for csharp mode"
   (add-hook 'csharp-mode-hook 'csharp-set-config)
   (add-hook 'csharp-mode-hook 'csharp-init-modes)
+
+  (bye-buffers-add-patterns-inbetween hidden-buffers
+                                      '("csharp-roslyn" "OmniServer" "omnisharp"))
+
   (msg "Mode config loaded: chsarp-mode"))
