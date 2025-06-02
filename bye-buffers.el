@@ -1,11 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
-(cl-defstruct bye-buffers patterns)
-
-(setq-default hidden-buffers
-              (make-bye-buffers
-               :patterns
-               `((seq "*ag search" (+ anything))
+(setq-default bye-buffers-list
+              `((seq "*ag search" (+ anything))
                  "*Async-native-compile-log*"
                  "*Buffer List*"
                  "*compilation*"
@@ -23,36 +19,34 @@
                  "*vc-diff*"
                  "*Warnings*"
                  "*xref*"
-                 )))
+                 ))
 
-(defun bye-buffers-wrap-keyword-into-pattern (keyword)
+(defun bye-buffers-wrap-word (keyword)
   "Wrap KEYWORD string into a pattern of the form (seq (* anything) KEYWORD (* anything))."
   `(seq (* anything) ,keyword (* anything)))
 
-(cl-defmethod bye-buffers-add-patterns ((buffs bye-buffers) patterns)
+(defun bye-buffers-add (patterns)
   "Destructively append NEW-PATTERNS to BUFFS' patterns using nconc."
-  (setf (bye-buffers-patterns buffs)
-        (nconc (bye-buffers-patterns buffs) patterns)))
+  (nconc bye-buffers-list patterns))
 
-(cl-defmethod bye-buffers-add-patterns-inbetween ((buffs bye-buffers) patterns)
+(defun bye-buffers-add-inbetween (patterns)
   "Destructively append NEW-PATTERNS to BUFFS' patterns using nconc."
-  (bye-buffers-add-patterns buffs (mapcar #'bye-buffers-wrap-keyword-into-pattern patterns)))
+  (bye-buffers-add (mapcar #'bye-buffers-wrap-word patterns)))
 
-(cl-defmethod bye-buffers-build-regexp ((buffs bye-buffers))
+(defun bye-buffers-build-regexp ()
   "Return a regexp string matching hidden buffer names."
   (rx-to-string
    `(or (and bos " ")
         (and bos
-             (or ,@(bye-buffers-patterns buffs))
+             (or ,@bye-buffers-list)
              eos))))
 
 (defun bye-buffers-skip-method (window buffer bury-or-kill)
   "Hide special buffers"
-  (string-match-p (bye-buffers-build-regexp hidden-buffers) (buffer-name buffer)))
+  (string-match-p (bye-buffers-build-regexp) (buffer-name buffer)))
 
 (define-minor-mode bye-buffers-mode
   "Toggle visibility of hidden buffers."
-  :lighter "byebuf"
   :global t
 
   (if bye-buffers-mode

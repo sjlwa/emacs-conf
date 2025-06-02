@@ -19,6 +19,7 @@ if test -f ~/.emacs | test -L ~/.emacs; then
 fi
 
 ln -s $(pwd)/emacs.el ~/.emacs
+ln -s $(pwd)/early-init.el ~/.emacs.d/early-init.el
 echo "ln -s "$(pwd)"/emacs.el ~/.emacs"
 echo -e "\e[35mdone!"
 

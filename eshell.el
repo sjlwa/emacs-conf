@@ -15,8 +15,14 @@
   (eshell-list-history)
   nil)
 
+(defun eshell-load-keymap ()
+  ;; (define-key esh-autosuggest-activemde-map [tab] 'esh-autosuggest-complete-word)
+  (define-key eshell-mode-map (kbd "C-w") 'ryanmarcus/backward-kill-word)
+  (define-key eshell-mode-map (kbd "C-d") 'sjlwa/kill-buffer-tab)
+  (define-key eshell-mode-map (kbd "C-S-t") 'sjlwa/open-eshell-tab-new))
+
 (defun eshell-init-setup ()
-  (keymap-eshell-load)
+  (eshell-load-keymap)
   (company-mode -1)
   ;; (setq esh-autosuggest-use-company-map t)
   (esh-autosuggest-mode)

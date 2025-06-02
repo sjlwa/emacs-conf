@@ -25,13 +25,6 @@
 (defun sjlwa/esc-esc-esc () (interactive)
   (if (minibufferp) (keyboard-escape-quit)))
 
-(defun my-icomplete-force-complete ()
-  "Force completion of the current icomplete candidate."
-  (interactive)
-  (when (bound-and-true-p icomplete-mode)
-    (let ((icomplete-prospects-height 1))
-      (icomplete-force-complete))))
-
 (defun emacs-detach ()
   (let ((process-connection-type nil)) ; Use a pipe instead of a pty 
     (start-process

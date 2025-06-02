@@ -24,8 +24,7 @@
         lsp-completion-show-detail nil
         lsp-auto-guess-root t))
 
-(bye-buffers-add-patterns-inbetween hidden-buffers
-                                    '("*lsp-" "*sonarlint" "*codeium"))
+(bye-buffers-add-inbetween '("*lsp-" "*sonarlint" "*codeium"))
 
 (add-hook 'lsp-mode-hook 'lsp-mode-init-config)
 (eval-after-load 'yasnippet '(yas-global-mode))

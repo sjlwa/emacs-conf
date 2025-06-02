@@ -1,10 +1,17 @@
+(defun dired-load-keymap ()
+  "Bind keys for actions on dired mode."
+  (define-key dired-mode-map (kbd "<mouse-2>") 'dired-find-alternate-file)
+  (define-key dired-mode-map (kbd "C-<backspace>") 'dired-up-directory)
+  (define-key dired-mode-map (kbd "C->") 'dired-show-omited)
+  (define-key dired-mode-map (kbd "C-.") 'dired-omit-mode))
+
 (defun dired-configure ()
   (setq dired-kill-when-opening-new-dired-buffer t)
   (put 'dired-find-alternate-file 'disabled nil)
   (setq dired-omit-files "^\\...+$")
   (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
 
-  (with-eval-after-load 'dired (keymap-dired-load)))
+  (with-eval-after-load 'dired (dired-load-keymap)))
 
 (defun dired-show-omited ()
   "Temporarily show only omitted files in Dired."

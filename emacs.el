@@ -17,7 +17,7 @@
 (eshell-define-init)
 (esup-define-init)
 (dired-configure)
-(fido-vertical-mode)
+
 
 (load "~/dev/emacs-conf/ide.el" nil inhibit-messages)
 (load "~/dev/emacs-conf/langs.el" nil inhibit-messages)

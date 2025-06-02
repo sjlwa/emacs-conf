@@ -66,27 +66,5 @@
   (keymap-global-bind-text-selection)
   (keymap-global-bind-general))
 
-(defun keymap-dired-load ()
-  "Bind keys for actions on dired mode."
-  (define-key dired-mode-map (kbd "<mouse-2>") 'dired-find-alternate-file)
-  (define-key dired-mode-map (kbd "C-<backspace>")
-              (lambda () (interactive) (find-alternate-file "..")))
-  ;; (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-  ;; (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))
-  (define-key dired-mode-map (kbd "C->") 'dired-show-omited)
-  (define-key dired-mode-map (kbd "C-.") 'dired-omit-mode)
-  (msg "Keymap loaded: Dired"))
-
-
-
-(with-eval-after-load 'icomplete
-  (define-key icomplete-minibuffer-map (kbd "TAB") #'my-icomplete-force-complete))
-
-(defun keymap-eshell-load ()
-  ;; (define-key esh-autosuggest-activemde-map [tab] 'esh-autosuggest-complete-word)
-  (define-key eshell-mode-map (kbd "C-w") 'ryanmarcus/backward-kill-word)
-  (define-key eshell-mode-map (kbd "C-d") 'sjlwa/kill-buffer-tab)
-  (define-key eshell-mode-map (kbd "C-S-t") 'sjlwa/open-eshell-tab-new))
-
 (with-eval-after-load 'prog-mode
   (define-key prog-mode-map (kbd "S-SPC") 'lsp-execute-code-action))
