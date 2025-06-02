@@ -1,6 +1,10 @@
+;;; -*- lexical-binding: t -*-
+
+(require 'vc-git)
+
 (defun sjlwa/find-file ()
   (interactive)
-  (if (not (eq (vc-root-dir) nil))
+  (if (not (eq (vc-git-root default-directory) nil))
       (call-interactively 'projectile-find-file)
     (call-interactively 'ido-find-file)))
 
@@ -52,9 +56,12 @@
     (cond ((and last-char-before-nil (eq major-mode 'web-mode))
            (emmet-expand-line nil)))))
 
-(defun format@ ()
+(defun format-buffer ()
   (interactive)
-  (lsp-format-buffer))
+  (if (bound-and-true-p lsp-mode)
+      (lsp-format-buffer))
+  (if (bound-and-true-p eglot-mode)
+      (eglot-format)))
 
 (defun sjlwa/ps-kill ()
   (require 's)

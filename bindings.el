@@ -1,9 +1,12 @@
+;;; -*- lexical-binding: t -*-
+
 (defun keymap-global-bind-navigation ()
   "Bind keys for navigation and window movement."
   (keymap-global-set "M-<left>"  #'windmove-left)
   (keymap-global-set "M-<right>" #'windmove-right)
   (keymap-global-set "M-<up>"    #'windmove-up)
   (keymap-global-set "M-<down>"  #'windmove-down)
+  (keymap-global-set "C-l"  #'goto-line)
   ;; TODO: fix end/beginning of line
   ;; (keymap-global-set "<s-right>" #'end-of-line)
   ;; (keymap-global-set "<s-left>"  #'beginning-of-line)
