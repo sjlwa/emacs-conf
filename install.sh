@@ -23,5 +23,10 @@ ln -s $(pwd)/early-init.el ~/.emacs.d/early-init.el
 echo "ln -s "$(pwd)"/emacs.el ~/.emacs"
 echo -e "\e[35mdone!"
 
+for theme in $(ls ./themes); do
+    sudo ln -s \
+         "${HOME}/dev/emacs-conf/themes/${theme}" \
+         "/usr/local/share/emacs/30.1/etc/themes/${theme}";
+done
 
 # ln -s "$(pwd)"/eshell.desktop ~/.local/share/applications/eshell.desktop

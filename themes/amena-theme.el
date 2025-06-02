@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;;;###theme-autoload
 (deftheme amena
   :background-mode 'dark
