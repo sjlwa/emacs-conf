@@ -15,8 +15,8 @@
 (load "~/dev/emacs-conf/initializers.el" nil inhibit-messages)
 (load "~/dev/emacs-conf/icommands.el" nil inhibit-messages)
 (load "~/dev/emacs-conf/packs.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/dired.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/image.el" nil inhibit-messages)
 (load "~/dev/emacs-conf/icomplete.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/major-modes/dired.el" nil inhibit-messages)
+(load "~/dev/emacs-conf/major-modes/image.el" nil inhibit-messages)
 
 ;;; early-init.el ends here.

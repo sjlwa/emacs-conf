@@ -15,6 +15,24 @@
   (eshell-list-history)
   nil)
 
+(defun read-ext-shell-env-vars (shell)
+  "Read the external shell environment variables."
+  (with-temp-buffer
+    (let ((command (cond
+                    ((string-equal shell "/bin/zsh") ". ~/.zshrc && env")
+                    ((string-equal shell "/bin/bash") ". ~/.bashrc && env")
+                    (t "env"))))
+      (when (= 0 (call-process shell nil t nil "-c" command))
+        (split-string (buffer-string) "\n" t)))))
+
+(defun use-ext-shell-env-vars (shell)
+  "Set Emacs environment variables to match an external shell's environment variables."
+  (setq process-environment (read-ext-shell-env-vars shell)))
+
+;; (setq shell-file-name "~/.zshrc")
+;; (setq shell-command-switch "-ic")
+;; (use-ext-shell-env-vars "/bin/zsh")
+
 (defun eshell-load-keymap ()
   ;; (define-key esh-autosuggest-activemde-map [tab] 'esh-autosuggest-complete-word)
   (define-key eshell-mode-map (kbd "C-w") 'ryanmarcus/backward-kill-word)
