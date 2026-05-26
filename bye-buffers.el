@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t -*-
+;;; bye-buffers --- bye-buffers -*- lexical-binding: t -*-
 
 (setq-default bye-buffers-list
               `((seq "*ag search" (+ anything))
@@ -52,3 +52,7 @@
   (if bye-buffers-mode
       (setq switch-to-prev-buffer-skip 'bye-buffers-skip-method)
     (setq switch-to-prev-buffer-skip nil)))
+
+(provide 'bye-buffers)
+
+;;; bye-buffers.el ends here

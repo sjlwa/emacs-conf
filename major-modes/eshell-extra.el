@@ -1,3 +1,8 @@
+;;; eshell-extra --- eshell configuration -*- lexical-binding: t -*-
+
+(require 'esh-autosuggest)
+(require 'esh-help)
+
 (defalias 'terminal 'eshell)
 
 (defun eshell/clear ()
@@ -16,7 +21,7 @@
   nil)
 
 (defun read-ext-shell-env-vars (shell)
-  "Read the external shell environment variables."
+  "Read the external SHELL environment variables."
   (with-temp-buffer
     (let ((command (cond
                     ((string-equal shell "/bin/zsh") ". ~/.zshrc && env")
@@ -26,7 +31,7 @@
         (split-string (buffer-string) "\n" t)))))
 
 (defun use-ext-shell-env-vars (shell)
-  "Set Emacs environment variables to match an external shell's environment variables."
+  "Set Emacs environment variables to match an external SHELL's environment variables."
   (setq process-environment (read-ext-shell-env-vars shell)))
 
 ;; (setq shell-file-name "~/.zshrc")
@@ -36,7 +41,7 @@
 (defun eshell-load-keymap ()
   ;; (define-key esh-autosuggest-activemde-map [tab] 'esh-autosuggest-complete-word)
   (define-key eshell-mode-map (kbd "C-w") 'ryanmarcus/backward-kill-word)
-  (define-key eshell-mode-map (kbd "C-d") 'sjlwa/kill-buffer-tab)
+  (define-key eshell-mode-map (kbd "C-d") 'tab-kill-buffer)
   (define-key eshell-mode-map (kbd "C-S-t") 'sjlwa/open-eshell-tab-new))
 
 (defun eshell-init-setup ()
@@ -44,7 +49,7 @@
   (company-mode -1)
   ;; (setq esh-autosuggest-use-company-map t)
   (esh-autosuggest-mode)
-  (eshell-syntax-highlighting-global-mode)
+;;  (eshell-syntax-highlighting-global-mode)
   (setq eshell-hist-ignoredups t
         eshell-scroll-to-bottom-on-input t
         eshell-visual-commands (append eshell-visual-commands
@@ -56,7 +61,7 @@
   ;;(setq eshell-prompt-function 'sjlwa-eshell-prompt)
   ;;(setq eshell-highlight-prompt nil)
   (add-hook 'eshell-mode-hook 'eshell-init-setup)
-  (add-hook 'after-change-major-mode-hook 'sjlwa/toggle-mode-line-based-on-mode))
+  (add-hook 'after-change-major-mode-hook 'mode-line-toggle-based-on-mode))
 
 (defun eshell-is-running ()
   "Check if there are buffers with names starting with *eshell*"
@@ -72,7 +77,8 @@
   ;; (if (eshell-is-running)
   ;;     (sjlwa/open-eshell-tab-new)
   ;;   (eshell))
-  (eshell))
+  (eshell)
+  )
 
 (defun eshell-init-after-server-check ()
   (if (daemonp)
@@ -94,3 +100,9 @@
    :weight "ultra-bold"))
 
 ;; (setq eshell-prompt-function 'sjlwa-eshell-prompt)
+
+(with-eval-after-load 'eshell (eshell-define-init))
+
+(provide 'eshell-extra)
+
+;;; eshell-extra.el ends here

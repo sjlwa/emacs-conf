@@ -8,15 +8,23 @@
           #'(lambda ()
               (setq gc-cons-threshold 800000
                     read-process-output-max 65536)))
-;; (setenv "LSP_USE_PLISTS" "true")
 
-(setq inhibit-messages t)
+(setenv "LSP_USE_PLISTS" "true")
 
-(load "~/dev/emacs-conf/initializers.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/icommands.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/packs.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/icomplete.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/major-modes/dired.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/major-modes/image.el" nil inhibit-messages)
+(add-to-list 'load-path "~/dev/emacs-conf")
+(add-to-list 'load-path "~/dev/emacs-conf/preload/")
+(add-to-list 'load-path "~/dev/emacs-conf/major-modes/")
+
+(require 'packages)
+(require 'initializers)
+(require 'functions)
+(require 'ifunctions)
+(require 'keymaps)
+(require 'icomplete-extra)
+
+(init-config)
+
+;; (setq inhibit-messages t)
+;; (load "~/dev/emacs-conf/major-modes/image.el" nil inhibit-messages)
 
 ;;; early-init.el ends here.

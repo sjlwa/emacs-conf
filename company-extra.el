@@ -1,7 +1,8 @@
-;;; -*- lexical-binding: t -*-
+;;; company-extra --- company-extra -*- lexical-binding: t -*-
+;; Code:
 
 (defun company-init-config ()
-  (setq company-idle-delay 0
+  (setq company-idle-delay 0.1
         company-minimum-prefix-length 1
         company-show-numbers t
         company-tooltip-width-grow-only t
@@ -19,8 +20,17 @@
 
 (defun company-keymap-load ()
   (define-key company-active-map (kbd "M-h") #'company-show-doc-buffer)
-  (define-key company-active-map (kbd "C-h") #'ryanmarcus/backward-kill-word))
+  (define-key company-active-map (kbd "C-h") #'ryanmarcus/backward-kill-word)
+  (define-key company-active-map (kbd "<backtab>") nil)
+  (define-key company-active-map (kbd "TAB") nil)
+  (define-key company-active-map (kbd "<tab>") nil))
 
 (with-eval-after-load 'company
   (company-keymap-load)
+  (add-hook 'prog-mode-hook 'global-company-mode)
+;;  (add-hook 'company-mode-hook 'company-box-mode)
   (add-hook 'company-mode-hook 'company-init-config))
+
+(provide 'company-extra)
+
+;;; company-extra.el ends here

@@ -1,4 +1,5 @@
-;;; -*- lexical-binding: t -*-
+;;; package --- keymaps -*- lexical-binding: t -*-
+;;; Code:
 
 (defun keymap-global-bind-navigation ()
   "Bind keys for navigation and window movement."
@@ -13,9 +14,7 @@
 
   (dotimes (i 10)
     (global-set-key (kbd (format "M-%d" i))
-                    (eval `(lambda () (interactive) (select-tab-by-number ,i)))))
-
-  (msg "Keymap loaded: Navigation"))
+                    (eval `(lambda () (interactive) (tab-select-by-number ,i))))))
 
 (defun keymap-global-bind-text-editing ()
   "Bind keys for text deletion and editing."
@@ -27,8 +26,7 @@
   (keymap-global-set "C-S-k"         #'xahlee/delete-line-backward)
   ;; (define-key input-decode-map "\C-h" [C-backspace])
   (global-set-key [backtab] 'sjlwa/tab)
-  (global-set-key "\t" 'indent-rigidly)
-  (msg "Keymap loaded: Text editing"))
+  (global-set-key "\t" 'indent-rigidly))
 
 (defun keymap-global-bind-visual ()
   "Bind keys for text scaling and visibility toggles."
@@ -36,8 +34,7 @@
   (keymap-global-set "C--"        #'text-scale-decrease)
   (keymap-global-set "C-c SPC"    #'hs-toggle-hiding)
   (keymap-global-set "M-S-<up>"   #'move-text-up)
-  (keymap-global-set "M-S-<down>" #'move-text-down)
-  (msg "Keymap loaded: Visual"))
+  (keymap-global-set "M-S-<down>" #'move-text-down))
 
 (defun keymap-global-bind-text-selection ()
   "Bind keys for text selection and expansion."
@@ -45,21 +42,20 @@
   (global-set-key (kbd "C-SPC") #'er/expand-region)
   (global-set-key (kbd "S-SPC") #'er/contract-region)
   (global-set-key (kbd "C-{")   #'mc/mark-all-in-region)
-  (global-set-key (kbd "C-}")   #'mc/mark-next-like-this)
-  (msg "Keymap loaded: Text selection"))
+  (global-set-key (kbd "C-}")   #'mc/mark-next-like-this))
 
 (defun keymap-global-bind-general ()
   "Bind keys for general actions and commands."
-  (global-set-key (kbd "ESC ESC ESC") #'sjlwa/esc-esc-esc)
+  (global-set-key (kbd "ESC ESC ESC") #'esc-esc-esc)
   (global-set-key (kbd "C-w")         #'kill-current-buffer)
   (global-set-key (kbd "C-p")         #'sjlwa/find-file)
-  (global-set-key (kbd "C-x C-d")     #'dired)
   (global-set-key (kbd "C-o")         #'bs-show)
   (global-set-key (kbd "C-S-s")       #'ag)
+  ;; (global-set-key (kbd "C-s")         #'save-buffer)
   (global-set-key (kbd "C-z")         #'undo-only)
   (global-set-key (kbd "C-S-z")       #'undo-redo)
   (global-set-key (kbd "C-r")         #'replace-string)
-  (msg "Keymap loaded: General"))
+  (global-set-key (kbd "C-c c")       #'project-compile))
 
 (defun keymap-global-load ()
   "Load all global key bindings."
@@ -71,3 +67,7 @@
 
 (with-eval-after-load 'prog-mode
   (define-key prog-mode-map (kbd "S-SPC") 'lsp-execute-code-action))
+
+(provide 'keymaps)
+
+;;; keymaps.el ends here

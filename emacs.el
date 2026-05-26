@@ -1,23 +1,56 @@
-;; -*- lexical-binding: t; -*-
+;;; emacs --- emacs configuration -*- lexical-binding: t; -*-
+;;; Commentary:
+;;; Code:
 
-(if (display-graphic-p)
-    (init-window-system)
-  (init-terminal-system))
+(require 'clipetty)
+(require 'xclip)
 
-(load "~/dev/emacs-conf/bye-buffers.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/commands.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/major-modes/eshell.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/bindings.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/dbcli.el" nil inhibit-messages)
+(require 'commands)
+(require 'dired-extra)
+(require 'org-extra)
+(require 'company-extra)
+(require 'eshell-extra)
+(require 'clipboard)
+(require 'eglot-extra)
 
-(init-config)
-(interactivity-mode)
-(keymap-global-load)
-(org-mode-define-config)
-(eshell-define-init)
-(esup-define-init)
-(dired-configure)
-(bye-buffers-mode)
+(require 'bye-buffers)
 
-(load "~/dev/emacs-conf/ide.el" nil inhibit-messages)
-(load "~/dev/emacs-conf/languages.el" nil inhibit-messages)
+(require 'languages)
+
+
+(setq esup-depth 0)
+(defun esup-define-init ()
+  (with-eval-after-load 'esup
+    (setq esup-user-init-file (file-truename "~/.emacs"))
+    (setq esup-depth 0)))
+
+
+(add-hook 'after-init-hook #'init-interactive-modes)
+(add-hook 'after-init-hook #'keymap-global-load)
+(add-hook 'after-init-hook #'global-diff-hl-mode)
+
+(defun start-window-system ()
+  (load-theme 'nojma t))
+
+(defun start-terminal-clipboard ()
+  (global-clipetty-mode)
+  (xclip-mode)
+  (normal-erase-is-backspace-mode 0)
+  (diff-hl-margin-mode 1))
+
+(defun start-terminal-system ()
+  (start-terminal-clipboard))
+
+(defun start-display ()
+  (make-thread (lambda ()
+		 (if (display-graphic-p)
+		     (start-window-system)
+		   (start-terminal-system)))))
+
+(add-hook 'after-init-hook #'start-display)
+
+(setq magit-log-margin '(t age 40 t 12))
+
+(provide 'emacs)
+
+;;; emacs.el ends here

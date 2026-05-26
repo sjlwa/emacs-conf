@@ -1,3 +1,5 @@
+;;; package --- functions -*- lexical-binding: t -*-
+
 (require 'subr-x)
 
 (defun current-git-branch ()
@@ -31,9 +33,6 @@
     (select-window minibuffer-window)
     (window-resize minibuffer-window (frame-height))))
 
-(defun msg (message)
-  (if (not inhibit-messages) (message message)))
-
 (defun merge-alists-simple (&rest alists)
   "Combine multiple ALISTS keeping duplicates."
   (apply #'append alists))
@@ -49,3 +48,21 @@
 (defun eshell-call-command-as-compilation (command args)
   "Run COMMAND with ARGS as a compilation process."
   (compile (concat command " " (string-join args " "))))
+
+(defun call-command-as-compilation (command args buff-name)
+  "Run COMMAND with ARGS as a compilation process."
+  (let* ((cmd (concat command " " (string-join args " ")))
+         (buf (compilation-start command 'compilation-mode
+                                 (lambda (_) buff-name))))
+    buf))
+
+(defun mode-line-toggle-based-on-mode ()
+  "Toggle the visibility of the mode line based on the buffer's mode."
+  (if (and (daemonp) (derived-mode-p 'eshell-mode))
+      (setq mode-line-format nil)
+    (setq mode-line-format (default-value 'mode-line-format)))
+  (force-mode-line-update))
+
+(provide 'functions)
+
+;;; functions.el ends here
