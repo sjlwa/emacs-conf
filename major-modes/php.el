@@ -8,4 +8,4 @@
 
   (add-to-list 'auto-mode-alist '("\\.php?\\'" . php-init))
 
-  (bye-buffers-add-inbetween "*iph"))
+)

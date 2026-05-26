@@ -17,7 +17,7 @@
   (add-hook 'c-ts-mode-hook 'eglot-ensure)
   (add-hook 'c-ts-mode-hook 'global-company-mode)
 
-  (bye-buffers-add-inbetween '("clang-error" "clang-output" "clangd")))
+  (bye-buffers-hide '("clang-error" "clang-output" "clangd")))
 
 ;; (defun eshell/make (&rest args)
 ;;   (interactive)

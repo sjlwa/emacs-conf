@@ -15,4 +15,4 @@
   (add-hook 'java-ts-mode-hook 'lsp)
   (add-hook 'java-ts-mode-hook 'yas-global-mode)
 
-  (bye-buffers-add-inbetween '("*jdtls")))
+  (bye-buffers-hide '("*jdtls")))

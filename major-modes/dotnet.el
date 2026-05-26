@@ -5,6 +5,8 @@
   (interactive)
   (eshell-call-command-as-compilation "dotnet" args))
 
+(bye-buffers-hide '("csharp-roslyn" "OmniServer" "omnisharp"))
+
 ;; (setq-default dotnet-comp-buffer-name "*dotnet-compilation*")
 
 ;; (defun dotnet-delete-compilation-frame ()
@@ -97,8 +99,8 @@
 
   (add-to-list 'auto-mode-alist '("\\.cshtml\\'" . web-mode))
   (add-hook 'csharp-mode-hook 'csharp-set-config)
-  (add-hook 'csharp-mode-hook 'csharp-init-modes)
+  (add-hook 'csharp-mode-hook 'csharp-init-modes))
 
-  (bye-buffers-add-inbetween '("csharp-roslyn" "OmniServer" "omnisharp")))
 
 (load-lang--csharp)
+

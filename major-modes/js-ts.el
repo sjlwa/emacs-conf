@@ -11,7 +11,7 @@
   (add-hook 'js2-mode-hook 'skewer-mode)
   (add-hook 'js2-mode-hook 'lsp-deferred)
 
-  (bye-buffers-add-inbetween '("*jsts")))
+  (bye-buffers-hide '("*jsts")))
 
 (defun load-lang--typescript ()
 
@@ -30,7 +30,7 @@
             (setq-local comment-start "{/* ")
             (setq-local comment-end   " */}")))
 
-  (bye-buffers-add-inbetween '("ts-ls")))
+  (bye-buffers-hide '("ts-ls")))
 
 (defun language-configure-astro ()
   (add-to-list 'treesit-language-source-alist
@@ -42,7 +42,7 @@
                (setq lsp-disabled-clients '(eslint))
                (lsp)))
 
-  (bye-buffers-add-inbetween '("astro-ls")))
+  (bye-buffers-hide '("astro-ls")))
 
 (load-lang--javascript)
 (load-lang--typescript)

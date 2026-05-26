@@ -12,4 +12,4 @@
   (eval-after-load 'python-ts-mode
     '(setq lsp-pyright-typechecking-mode "strict"))
 
-  (bye-buffers-add-inbetween '("pylsp" "pyright")))
+  (bye-buffers-hide '("pylsp" "pyright")))

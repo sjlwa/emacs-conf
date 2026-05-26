@@ -8,4 +8,4 @@
 (defun load-lang--dart ()
   (add-hook 'dart-mode-hook 'lsp-deferred)
   (eval-after-load 'dart-mode '(dart-init-config))
-  (bye-buffers-add-inbetween '("dart_analysis" "LSP Dart")))
+  (bye-buffers-hide '("dart_analysis" "LSP Dart")))

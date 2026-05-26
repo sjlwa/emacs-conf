@@ -14,6 +14,8 @@
 (require 'eglot-extra)
 
 (require 'bye-buffers)
+(require 'bye-buffers-list)
+(bye-buffers-mode)
 
 (require 'languages)
 

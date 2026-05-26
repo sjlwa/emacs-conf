@@ -14,4 +14,4 @@
   (add-hook 'go-ts-mode-hook 'global-flycheck-mode)
   (add-hook 'go-ts-mode-hook 'lsp-deferred)
   
-  (bye-buffers-add-inbetween '("gopls")))
+  (bye-buffers-hide '("gopls")))

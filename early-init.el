@@ -14,6 +14,7 @@
 (add-to-list 'load-path "~/dev/emacs-conf")
 (add-to-list 'load-path "~/dev/emacs-conf/preload/")
 (add-to-list 'load-path "~/dev/emacs-conf/major-modes/")
+(add-to-list 'load-path "~/dev/bye-buffers/")
 
 (require 'packages)
 (require 'initializers)
