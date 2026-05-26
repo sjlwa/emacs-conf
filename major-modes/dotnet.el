@@ -1,11 +1,57 @@
 ;;; -*- lexical-binding: t -*-
 
-(defun eshell/dotnet (&rest args)
+(add-to-list 'load-path "~/dev/dotnet-plus")
+(require 'dotnet-plus)
+
+(defun eshell/dotnet (&rest params)
   "A custom Eshell function for running 'dotnet' commands as a compilation."
   (interactive)
-  (eshell-call-command-as-compilation "dotnet" args))
+  (eshell-call-command-as-compilation "dotnet" params))
+
+(defalias 'dotnet-eshell 'eshell/dotnet)
+
+(defun remove-carriage-returns ()
+  (interactive)
+  (replace-string "\r" ""))
+
+(defun dotnet-format-and-clean ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (eglot-format)
+    (remove-carriage-returns)
+    (save-buffer)))
+
+(defun dotnet-initialize-modes ()
+  (flymake-mode)
+  (global-company-mode)
+  (electric-indent-mode)
+
+  (setq buffer-file-coding-system 'dos)
+  (setq truncate-lines nil
+        tab-width 4
+        evil-shift-width 4))
+
+(add-to-list 'treesit-language-source-alist
+             '(csharp "https://github.com/tree-sitter/tree-sitter-c-sharp"))
+
+(add-to-list 'auto-mode-alist '("\\.cshtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.slnx\\'" . csproj-mode))
+(add-to-list 'auto-mode-alist '("\\Directory.*.props\\'" . csproj-mode))
+
+(add-hook 'csharp-ts-mode-hook #'dotnet-initialize-modes)
 
 (bye-buffers-hide '("csharp-roslyn" "OmniServer" "omnisharp"))
+
+(with-eval-after-load 'eglot
+  (advice-add
+   'eglot-code-actions
+   :after
+   (lambda (&rest _)
+     (when (eq major-mode 'csharp-ts-mode)
+       (dotnet-format-and-clean)))))
+
 
 ;; (setq-default dotnet-comp-buffer-name "*dotnet-compilation*")
 
@@ -23,84 +69,3 @@
 ;;   (interactive)
 ;;   (let ((compilation-buffer (call-command-as-compilation "dotnet" args "*dotnet-compilation*")))
 ;;     (display-buffer compilation-buffer '(display-buffer-pop-up-frame))))
-
-(defalias 'dotnet-eshell 'eshell/dotnet)
-
-;; (add-to-list 'display-buffer-alist
-;;              `(,(rx bos ,dotnet-comp-buffer-name eos)
-;;                (display-buffer-reuse-window display-buffer-pop-up-frame)
-;;                (reusable-frames . visible)))
-
-
-(defun dotnet-dap-netcore-enable ()
-  (require 'dap-netcore)
-  (require 'dap-utils)
-  (setq dap-print-io t)
-  (setq dap-netcore-install-dir "~/.emacs.d/.cache/")
-  (setq dap-netcore-download-url
-        "https://github.com/Samsung/netcoredbg/releases/download/3.1.2-1054/netcoredbg-linux-amd64.tar.gz")
-  (dap-auto-configure-mode))
-
-(defun lsp-csharp-roslyn-enable ()
-  (require 'lsp-mode)
-  (setq lsp-disabled-clients '(csharp-ls omnisharp))
-  (setq lsp-client-packages (remove 'lsp-csharp lsp-client-packages))
-  (setq lsp-csharp-server-args
-        (list "--languageserver" "--hostPID" (format "%d" (emacs-pid))))
-  (lsp)
-  )
-
-;; (defun custom-lsp-roslyn--on-initialized (workspace)
-;;   (lsp-roslyn-open-solution-file)
-;;   (with-lsp-workspace workspace
-;;     (lsp--set-configuration
-;;      #s(hash-table
-;;          size 30
-;;          test equal
-;;          data (
-;;                "csharp|background_analysis.dotnet_analyzer_diagnostics_scope" "fullSolution"
-;;                "csharp|background_analysis.dotnet_compiler_diagnostics_scope" "fullSolution"
-;;                )))))
-
-;; (advice-add 'lsp-roslyn--on-initialized :override #'custom-lsp-roslyn--on-initialized)
-
-
-;; (defun roslyn-get-executable-list ()
-;;   '("dotnet"
-;;     "exec"
-;;     "/home/sjlwa/.emacs.d/.cache/lsp/roslyn/out/microsoft.codeanalysis.languageserver.linux-x64/4.13.0-2.24564.12/content/LanguageServer/linux-x64/Microsoft.CodeAnalysis.LanguageServer.dll"
-;;     "--logLevel" "Information"
-;;     "--extensionLogDirectory" "/home/sjlwa/.roslyn-lsp-logs"))
-
-;; (defun eglot-csharp-roslyn-enable ()
-;;   (with-eval-after-load 'eglot
-;;     (add-to-list 'eglot-server-programs
-;;                  `(csharp-mode . ,(roslyn-get-executable-list)))))
-
-
-(defun csharp-init-modes ()
-  ;; (flycheck-mode)
-  (lsp-csharp-roslyn-enable)
-  (dotnet-dap-netcore-enable))
-
-(defun csharp-set-config ()
-  (c-set-style "ellemtel")
-  (setq indent-tabs-mode nil
-        c-syntactic-indentation t
-        c-basic-offset 4
-        truncate-lines t
-        tab-width 4
-        evil-shift-width 4))
-
-(defun load-lang--csharp ()
-  "Loads the required configuration for csharp mode"
-  (add-to-list 'treesit-language-source-alist
-               '(csharp "https://github.com/tree-sitter/tree-sitter-c-sharp"))
-
-  (add-to-list 'auto-mode-alist '("\\.cshtml\\'" . web-mode))
-  (add-hook 'csharp-mode-hook 'csharp-set-config)
-  (add-hook 'csharp-mode-hook 'csharp-init-modes))
-
-
-(load-lang--csharp)
-
