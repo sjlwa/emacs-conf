@@ -1,5 +1,15 @@
-;;; package --- org-extra -*- lexical-binding: t -*-
+;;; org-extra.el --- org mode configuration  -*- lexical-binding: t -*-
+;;; Commentary:
 ;;; Code:
+
+(let ((gc-cons-threshold most-positive-fixnum))
+  (require 'org))
+
+(defun org-mode-boost-gc (orig-fun &rest args)
+  (let ((gc-cons-threshold most-positive-fixnum))
+    (apply orig-fun args)))
+
+(advice-add 'org-mode :around #'org-mode-boost-gc)
 
 (defun org-mode-define-tasks-status ()
   (setq org-todo-keywords '((sequence "TODO" "DOING" "|" "DONE")))
