@@ -5,7 +5,7 @@
 (defun sjlwa/find-file ()
   (interactive)
   (if (not (eq (vc-git-root default-directory) nil))
-      (call-interactively 'projectile-find-file)
+      (call-interactively 'project-find-file)
     (call-interactively 'ido-find-file)))
 
 (defun emacs-detach ()

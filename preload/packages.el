@@ -19,7 +19,6 @@
     (magit . t)
     (move-text . t)
     (multiple-cursors . t)
-    (projectile . f)
     (rainbow-delimiters . t)
     (auto-sudoedit-mode . t)
     (marginalia . nil)
@@ -75,6 +74,16 @@
 
 (advice-add 'package-install
             :after #'prevent-package-selected-packages-update)
+
+(defun packages-reverse-dependencies (package)
+  "Return installed packages depending on PACKAGE."
+  (cl-loop for (pkg . descs) in package-alist
+           for desc = (car descs)
+           when (seq-some
+                 (lambda (dep)
+                   (eq (car dep) package))
+                 (package-desc-reqs desc))
+           collect pkg))
 
 (provide 'packages)
 
