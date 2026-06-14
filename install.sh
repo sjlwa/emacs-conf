@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. ./info.sh
+. ./version.sh
 
-function emacs_install() {
+function emacs_link_dot_emacs() {
     ln -s $(pwd)/emacs.el ~/.emacs
     ln -s $(pwd)/early-init.el ~/.emacs.d/early-init.el
     echo "ln -s "$(pwd)"/emacs.el ~/.emacs"
@@ -17,27 +17,29 @@ function emacs_link_themes() {
     done
 }
 
-if test -f ~/.emacs | test -L ~/.emacs; then
-    echo -e "\e[36m.emacs found in home directory. This action will delete it."
-    echo -e -n "Do yo want to create a backup? y/n \e[0m"
-    
-    read backup
-    if [[ $backup == "y" ]]; then
-        cp -P ~/.emacs ~/my.emacs.backup
-        echo "cp ~/.emacs ~/my.emacs.backup"
-        
-    elif [[ $backup != "n" ]]; then
-        echo -e "\e[31maborted"
-        exit
+function emacs_install() {
+    if test -f ~/.emacs | test -L ~/.emacs; then
+        echo -e "\e[36m.emacs found in home directory. This action will delete it."
+        echo -e -n "Do yo want to create a backup? y/n \e[0m"
+
+        read backup
+        if [[ $backup == "y" ]]; then
+            cp -P ~/.emacs ~/my.emacs.backup
+            echo "cp ~/.emacs ~/my.emacs.backup"
+
+        elif [[ $backup != "n" ]]; then
+            echo -e "\e[31maborted"
+            exit
+        fi
+
+        rm ~/.emacs
+        echo "rm ~/.emacs"
     fi
-    
-    rm ~/.emacs
-    echo "rm ~/.emacs"
-fi
 
-emacs_install
-emacs_link_themes
+    emacs_link_dot_emacs
+    emacs_link_themes
 
-# ln -s "$(pwd)"/eshell.desktop ~/.local/share/applications/eshell.desktop
+    # ln -s "$(pwd)"/eshell.desktop ~/.local/share/applications/eshell.desktop
+}
 
 "$@"
